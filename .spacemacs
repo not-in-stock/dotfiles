@@ -49,6 +49,7 @@ This function should only modify configuration layer settings."
               nrepl-log-messages nil)
      docker
      emacs-lisp
+     evil-cleverparens
      git
      go
      helm
@@ -402,7 +403,7 @@ before packages are loaded."
   (require 'flycheck-joker)
   (setq powerline-default-separator 'utf-8)
 
-  (spacemacs/toggle-evil-safe-lisp-structural-editing-on-register-hooks)
+  (spacemacs/toggle-evil-cleverparens-on)
 
   ;; Fixing "C-k" not working with company-completion tooltips
   (add-hook
