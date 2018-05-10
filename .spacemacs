@@ -57,7 +57,6 @@ This function should only modify configuration layer settings."
      javascript
      markdown
      org
-     php
      shell-scripts
      syntax-checking
      sql
@@ -67,11 +66,9 @@ This function should only modify configuration layer settings."
    ;; wrapped in a layer. If you need some configuration for these
    ;; packages, then consider creating a layer. You can also put the
    ;; configuration in `dotspacemacs/user-config'.
-   dotspacemacs-additional-packages '(all-the-icons
-                                      clojure-cheatsheet
+   dotspacemacs-additional-packages '(clojure-cheatsheet
                                       doom-themes
-                                      flycheck-joker
-                                      material-theme)
+                                      flycheck-joker)
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
    ;; A list of packages that will not be installed and loaded.
@@ -142,19 +139,17 @@ It should only modify the values of Spacemacs settings."
    ;; List of themes, the first of the list is loaded when spacemacs starts.
    ;; Press `SPC T n' to cycle to the next theme in the list (works great
    ;; with 2 themes variants, one dark and one light)
-   dotspacemacs-themes '(zenburn
-                         sanityinc-solarized-dark
-                         sanityinc-solarized-light
-                         doom-one)
+   dotspacemacs-themes '(dracula
+                         rebecca)
    ;; If non-nil the cursor color matches the state color in GUI Emacs.
    dotspacemacs-colorize-cursor-according-to-state t
    ;; Default font, or prioritized list of fonts. `powerline-scale' allows to
    ;; quickly tweak the mode-line size to make separators look not too crappy.
-   dotspacemacs-default-font '("Hack"
+   dotspacemacs-default-font '("Source Code Pro for Powerline"
                                :size 13
                                :weight normal
                                :width normal
-                               :powerline-scale 1.1)
+                               :powerline-scale 1)
    ;; The leader key
    dotspacemacs-leader-key "SPC"
    ;; The key used for Emacs commands `M-x' (after pressing on the leader key).
@@ -256,7 +251,7 @@ It should only modify the values of Spacemacs settings."
    ;; (default nil) (Emacs 24.4+ only)
    dotspacemacs-maximized-at-startup t
    ;; A value from the range (0..100), in increasing opacity, which describes
-   ;; the transparency level of a frame when it's active or selected.
+   ;; the a frame when it's active or selected.
    ;; Transparency can be toggled through `toggle-transparency'. (default 90)
    dotspacemacs-active-transparency 90
    ;; A value from the range (0..100), in increasing opacity, which describes
@@ -357,6 +352,47 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
           ("org" . "orgmode.org/elpa/")
           ("gnu" . "elpa.gnu.org/packages/"))))
 
+(defun but-matched (echo-messge messages)
+  (when (member echo-messge messages)
+    (remove echo-messge messages)))
+
+(defun buffer-contains? (buffer string start-from)
+  (with-current-buffer buffer
+    (save-excursion
+      (save-match-data
+        (goto-char start-from)
+        (search-forward string nil t)))))
+
+(defun format-time (time)
+ (format "In %.3f seconds" time))
+
+(defun on-messages-buffer-contains (sync-messages sync-fn start-fn)
+  ;; dynamic scope sucks
+  (defvar begin-search-pos (with-current-buffer (messages-buffer) (point-max)))
+  (defvar messages-list sync-messages)
+  (defvar on-sync-fn sync-fn)
+  (defvar start-time (float-time))
+
+  (when start-fn (funcall start-fn))
+
+  (defun sync (orig-fun &rest args)
+    (let ((echo-message (current-message)))
+      (when-let ((rest (but-matched echo-message messages-list)))
+        (let ((positions (mapcar (lambda (string)
+                                   (buffer-contains? (messages-buffer) string begin-search-pos))
+                                 rest)))
+          (when (not (position nil positions))
+            (advice-remove 'message #'dev-sync)
+            (funcall on-sync-fn)
+            (message (format-time (- (float-time) start-time)))))))
+    args)
+
+  (advice-remove 'message #'sync)
+  (advice-add 'message :after #'sync))
+
+(defun str (arg)
+  (format "%S" arg))
+
 (defun dotspacemacs/user-config ()
   "Configuration for user code:
 This function is called at the very end of Spacemacs startup, after layer
@@ -364,7 +400,7 @@ configuration.
 Put your configuration code here, except for variables that should be set
 before packages are loaded."
   (require 'flycheck-joker)
-  (require 'all-the-icons)
+  (setq powerline-default-separator 'utf-8)
 
   (spacemacs/toggle-evil-safe-lisp-structural-editing-on-register-hooks)
 
@@ -403,14 +439,27 @@ before packages are loaded."
 
   (defun cider-project-reset ()
     (interactive)
-    (cider-interactive-eval "(dev/reset)"))
+    (cider-interactive-eval (str '(dev/reset)) ))
+
+  (defun cider-project-load ()
+    (interactive)
+    (on-messages-buffer-contains
+     '("AST index updated" "Artifact cache updated")
+     (lambda ()
+       (cider-project-reset)
+       (message "Project loaded"))
+     (lambda ()
+       (message "============ Waiting for tooling to complete ============")
+       (cider-interactive-eval
+        (str '(println "============ Waiting for tooling to complete ============"))))))
 
   (defun cider-figwheel-repl ()
     (interactive)
     (save-some-buffers)
     (with-current-buffer (cider-current-repl-buffer)
       (goto-char (point-max))
-      (insert "(cljs-repl)")
+      (insert (str '(cljs-repl)))
+      (rename-buffer "*cljs-repl*")
       (cider-repl-return)))
 
   (defun cider-dev ()
@@ -418,7 +467,7 @@ before packages are loaded."
     (save-some-buffers)
     (with-current-buffer (cider-current-repl-buffer)
       (goto-char (point-max))
-      (insert "(dev)")
+      (insert (str '(dev)))
       (cider-repl-return)))
 
   (defun cider-default-connect ()
@@ -430,12 +479,23 @@ before packages are loaded."
 
   (dolist (m '(clojure-mode))
     (spacemacs/set-leader-keys-for-major-mode m
+      "l" 'cider-project-load
       "j" 'cider-project-reset
+      "cn" 'flycheck-next-error
+      "cp" 'flycheck-previous-error
       "J" 'cider-dev
       "sj" 'cider-figwheel-repl
       "sa" 'cider-default-connect
       "sC" 'cider-replicate-connection
       "hc" 'clojure-cheatsheet))
+
+  (dolist (m '(cider-repl-mode))
+    (spacemacs/set-leader-keys-for-major-mode m
+      "l" 'cider-project-load
+      "j" 'cider-project-reset
+      "J" 'cider-dev
+      "sj" 'cider-figwheel-repl
+      "sC" 'cider-replicate-connection))
 
   (dolist (m '(clojure-mode clojurescript-mode))
     (spacemacs/set-leader-keys-for-major-mode m
@@ -446,7 +506,7 @@ before packages are loaded."
     evil-want-Y-yank-to-eol nil
     neo-confirm-create-directory (quote off-p)
     neo-confirm-create-file (quote off-p)
-    neo-theme (quote icons)))
+    neo-theme (quote nerd)))
 
 ;; Do not write anything past this comment. This is where Emacs will
 ;; auto-generate custom variable definitions.
