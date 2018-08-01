@@ -1,0 +1,36 @@
+{
+    "child": {
+        "child1": {
+            "directory": "\/home\/andrey\/workspace\/transportal",
+            "height": 430,
+            "overrideCommand": "lein do clean, dev",
+            "profile": "2b7c4080-0ddd-46c5-8f23-563fd3ba789d",
+            "readOnly": false,
+            "synchronizedInput": true,
+            "type": "Terminal",
+            "uuid": "ff2842e8-bac6-4292-bc5b-1a830233b1a7",
+            "width": 959
+        },
+        "child2": {
+            "directory": "\/home\/andrey\/workspace\/transportal",
+            "height": 430,
+            "profile": "2b7c4080-0ddd-46c5-8f23-563fd3ba789d",
+            "readOnly": false,
+            "synchronizedInput": true,
+            "type": "Terminal",
+            "uuid": "98211073-c603-4eb9-90e4-07bcf2c9d504",
+            "width": 958
+        },
+        "orientation": 0,
+        "position": 50,
+        "ratio": 0.5,
+        "type": "Paned"
+    },
+    "height": 430,
+    "name": "Default",
+    "synchronizedInput": false,
+    "type": "Session",
+    "uuid": "2ae0c8e0-9ec6-4314-bf2a-09caa3527b8e",
+    "version": "1.0",
+    "width": 1918
+}
