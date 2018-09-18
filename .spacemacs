@@ -146,11 +146,13 @@ It should only modify the values of Spacemacs settings."
    dotspacemacs-colorize-cursor-according-to-state t
    ;; Default font, or prioritized list of fonts. `powerline-scale' allows to
    ;; quickly tweak the mode-line size to make separators look not too crappy.
+
+   dotspacemacs-mode-line-theme '(spacemacs :separator utf-8 :separator-scale 1)
+
    dotspacemacs-default-font '("Source Code Pro for Powerline"
                                :size 13
                                :weight normal
-                               :width normal
-                               :powerline-scale 1)
+                               :width normal)
    ;; The leader key
    dotspacemacs-leader-key "SPC"
    ;; The key used for Emacs commands `M-x' (after pressing on the leader key).
@@ -240,8 +242,7 @@ It should only modify the values of Spacemacs settings."
    ;; If non-nil a progress bar is displayed when spacemacs is loading. This
    ;; may increase the boot time on some systems and emacs builds, set it to
    ;; nil to boost the loading time. (default t)
-   dotspacemacs-loading-progress-bar t
-   ;; If non-nil the frame is fullscreen when Emacs starts up. (default nil)
+   dotspacemacs-loading-progress-bar t ;; If non-nil the frame is fullscreen when Emacs starts up. (default nil)
    ;; (Emacs 24.4+ only)
    dotspacemacs-fullscreen-at-startup nil
    ;; If non-nil `spacemacs/toggle-fullscreen' will not use native fullscreen.
@@ -449,13 +450,61 @@ before packages are loaded."
     (spacemacs/set-leader-keys-for-major-mode m
       "gk" 'cider-find-keyword))
 
-  (setq-default
-    clojure-indent-style :always-align
-    evil-want-Y-yank-to-eol nil
-    neo-confirm-create-directory (quote off-p)
-    neo-confirm-create-file (quote off-p)
-    neo-theme (quote nerd)))
+  (custom-set-faces
+   '(flyspell-incorrect ((t (:underline "#ff5555"))))
+   '(flycheck-error ((t (:underline "#ff5555"))))
+   '(flycheck-info ((t (:underline "#50fa7b"))))
+   '(flycheck-warning ((t (:underline "#ffb86c"))))
+   '(flyspell-duplicate ((t (:underline "#ffb86c")))))
 
+  (setq-default
+   clojure-indent-style :always-align
+   evil-want-Y-yank-to-eol nil
+   neo-confirm-create-directory (quote off-p)
+   neo-confirm-create-file (quote off-p)
+   neo-theme (quote nerd))
+
+
+  (defface re-frame-sub '((t (:foreground "#ffb86c"))) "DrakulaOrange")
+  (defface re-frame-evt '((t (:foreground "#ff5555"))) "DrakulaRed")
+  (defface re-frame-name '((t (:foreground "#4684f4"))) "GoogleBlue")
+
+  (defun word-after (word)
+    (concat word " \\([[:graph:]]+\\)"))
+
+  (font-lock-add-keywords
+   'clojurescript-mode `((,(word-after "defevent-fx") 1 're-frame-name t)
+                         (,(word-after "defevent-db") 1 're-frame-name t)
+                         (,(word-after "defsub") 1 're-frame-name t)
+                         (,(word-after "defsub-raw") 1 're-frame-name t)
+                         ("defsub" 0 're-frame-sub t)
+                         ("defsub-raw" 0 're-frame-sub t)
+                         ("<sub" 0 're-frame-sub t)
+                         ("defevent-fx" 0 're-frame-evt t)
+                         ("defevent-db" 0 're-frame-evt t)
+                         (">evt" 0 're-frame-evt t)))
+  (custom-set-variables
+   '(safe-local-variable-values
+     (quote
+      ((cider-default-cljs-repl . figwheel)
+       (helm-ag-use-agignore t)
+       (cljr-libspec-whitelist "^cljs.core.specs.alpha"
+                               "^cljs-time.extend"
+                               "^cljs-time.instant"
+                               "^cljsjs.moment.locale.ru"
+                               "^googlecloud.cloudstorage.storage"
+                               "^day8.re-frame.async-flow-fx"
+                               "^day8.re-frame.http-fx"
+                               "^transportal.events"
+                               "^transportal.interval"
+                               "^transportal.intro")
+       (cljr-after-warming-ast-cache-hook . (lambda (&rest ignore)
+                                              (interactive)
+                                              (cider-interactive-eval "(dev/reset)")))
+       (javascript-backend . tern)
+       (javascript-backend . lsp)
+       (go-backend . go-mode)
+       (go-backend . lsp))))))
 ;; Do not write anything past this comment. This is where Emacs will
 ;; auto-generate custom variable definitions.
 (defun dotspacemacs/emacs-custom-settings ()
