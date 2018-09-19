@@ -283,7 +283,7 @@ It should only modify the values of Spacemacs settings."
    ;;                       text-mode
    ;;   :size-limit-kb 1000)
    ;; (default nil)
-   dotspacemacs-line-numbers nil
+   dotspacemacs-line-numbers t
    ;; Code folding method. Possible values are `evil' and `origami'.
    ;; (default 'evil)
    dotspacemacs-folding-method 'evil
@@ -349,6 +349,7 @@ This function is called immediately after `dotspacemacs/init', before layer
 configuration.
 It is mostly for variables that should be set before packages are loaded.
 If you are unsure, try setting them in `dotspacemacs/user-config' first."
+  (when window-system (set-frame-size (selected-frame) 80 24))
   (setq configuration-layer-elpa-archives
         '(("melpa" . "melpa.org/packages/")
           ("org" . "orgmode.org/elpa/")
@@ -361,10 +362,24 @@ configuration.
 Put your configuration code here, except for variables that should be set
 before packages are loaded."
   (require 'flycheck-joker)
+  (delete-selection-mode)
   (setq powerline-default-separator 'utf-8)
   (setq enable-local-variables :safe)
+  (global-evil-mc-mode 1)
+
+ ;; Saves temp and backup files to /tmp/ directiry to to clutter worktree
+  (setq backup-directory-alist
+        `((".*" . ,temporary-file-directory)))
+  (setq auto-save-file-name-transforms
+        `((".*" ,temporary-file-directory t)))
 
   (spacemacs/toggle-evil-safe-lisp-structural-editing-on-register-hooks)
+
+  (add-hook 'prog-mode-hook #'rainbow-mode)
+  (add-hook 'clojure-mode-hook #'evil-cleverparens-mode)
+  (add-hook 'clojure-mode-hook #'visual-line-mode)
+  (add-hook 'clojure-mode-hook #'flycheck-mode)
+  (add-hook 'clojure-mode-hook #'turn-on-fci-mode)
 
   ;; Fixing "C-k" not working with company-completion tooltips
   (add-hook
@@ -399,6 +414,16 @@ before packages are loaded."
             (lambda ()
               (setq whitespace-line-column 90)
               (setq fill-column 90)))
+
+  ;; Make movement keys work like they should
+  (define-key evil-normal-state-map (kbd "<remap> <evil-next-line>") 'evil-next-visual-line)
+  (define-key evil-normal-state-map (kbd "<remap> <evil-previous-line>") 'evil-previous-visual-line)
+  (define-key evil-motion-state-map (kbd "<remap> <evil-next-line>") 'evil-next-visual-line)
+  (define-key evil-motion-state-map (kbd "<remap> <evil-previous-line>") 'evil-previous-visual-line)
+
+  ;; Make horizontal movement cross lines
+  (setq-default evil-cross-lines t)
+  (setq-default default-fill-column 90)
 
   (defun cider-project-reset ()
     (interactive)
@@ -484,6 +509,17 @@ before packages are loaded."
                          ("defevent-db" 0 're-frame-evt t)
                          (">evt" 0 're-frame-evt t)))
   (custom-set-variables
+   '(cider-cljs-lein-repl
+     "(do (require 'figwheel-sidecar.repl-api) (figwheel-sidecar.repl-api/start-figwheel!) (figwheel-sidecar.repl-api/cljs-repl))")
+   '(evil-want-Y-yank-to-eol nil)
+   '(fill-column 90)
+   '(fringe-mode 0 nil (fringe))
+   '(magit-branch-read-upstream-first t)
+   '(magit-diff-refine-hunk (quote all))
+   '(magit-log-section-commit-count 0)
+   '(neo-confirm-create-directory (quote off-p))
+   '(neo-confirm-create-file (quote off-p))
+   '(neo-vc-integration (quote (face)))
    '(safe-local-variable-values
      (quote
       ((cider-default-cljs-repl . figwheel)
