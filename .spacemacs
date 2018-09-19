@@ -376,10 +376,6 @@ before packages are loaded."
   (spacemacs/toggle-evil-safe-lisp-structural-editing-on-register-hooks)
 
   (add-hook 'prog-mode-hook #'rainbow-mode)
-  (add-hook 'clojure-mode-hook #'evil-cleverparens-mode)
-  (add-hook 'clojure-mode-hook #'visual-line-mode)
-  (add-hook 'clojure-mode-hook #'flycheck-mode)
-  (add-hook 'clojure-mode-hook #'turn-on-fci-mode)
 
   ;; Fixing "C-k" not working with company-completion tooltips
   (add-hook
