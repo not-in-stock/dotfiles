@@ -476,6 +476,7 @@ before packages are loaded."
       "gk" 'cider-find-keyword))
 
   (custom-set-faces
+   '(linum ((t (:background "#282a36" :foreground "#565761" :slant normal))))
    '(flyspell-incorrect ((t (:underline "#ff5555"))))
    '(flycheck-error ((t (:underline "#ff5555"))))
    '(flycheck-info ((t (:underline "#50fa7b"))))
