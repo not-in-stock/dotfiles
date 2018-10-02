@@ -478,7 +478,6 @@ before packages are loaded."
    neo-confirm-create-file (quote off-p)
    neo-theme (quote nerd))
 
-
   (defface re-frame-sub '((t (:foreground "#ffb86c"))) "DrakulaOrange")
   (defface re-frame-evt '((t (:foreground "#ff5555"))) "DrakulaRed")
   (defface re-frame-name '((t (:foreground "#4684f4"))) "GoogleBlue")
@@ -500,7 +499,7 @@ before packages are loaded."
                          (,(word-after "<sub") 1 're-frame-name t)
                          (,(word-after-before-slash "<sub") 1 'font-lock-type-face t)
                          (,(word-after ">evt") 1 're-frame-name t)
-                         (,(word-after-before-slash "<sub") 1 'font-lock-type-face t)
+                         (,(word-after-before-slash ">evt") 1 'font-lock-type-face t)
                          ("defsub" 0 're-frame-sub t)
                          ("defsub-raw" 0 're-frame-sub t)
                          ("<sub" 0 're-frame-sub t)
