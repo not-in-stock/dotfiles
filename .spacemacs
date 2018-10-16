@@ -45,6 +45,7 @@ This function should only modify configuration layer settings."
               cider-repl-use-pretty-printing t
               cljr--debug-mode t
               cljr-warn-on-eval nil
+              clojure-enable-clj-refactor t
               nrepl-hide-special-buffers t
               nrepl-log-messages nil)
      docker
