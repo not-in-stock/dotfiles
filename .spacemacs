@@ -366,7 +366,6 @@ before packages are loaded."
   (delete-selection-mode)
   (setq powerline-default-separator 'utf-8)
   (setq enable-local-variables :safe)
-  (global-evil-mc-mode 1)
 
  ;; Saves temp and backup files to /tmp/ directiry to to clutter worktree
   (setq backup-directory-alist
