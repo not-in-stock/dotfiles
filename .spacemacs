@@ -79,6 +79,7 @@ This function should only modify configuration layer settings."
    ;; Also include the dependencies as they will not be resolved automatically.
    dotspacemacs-additional-packages
    '(dracula-theme
+     flycheck-clj-kondo
      flycheck-joker)
 
    ;; A list of packages that cannot be updated.
@@ -482,7 +483,20 @@ This function is called at the very end of Spacemacs startup, after layer
 configuration.
 Put your configuration code here, except for variables that should be set
 before packages are loaded."
-  (require 'flycheck-joker)
+  (use-package clojure-mode
+    :ensure t
+    :config
+    (require 'flycheck-joker)
+    (require 'flycheck-clj-kondo)
+    (dolist (checker '(clj-kondo-clj clj-kondo-cljs clj-kondo-cljc clj-kondo-edn))
+      (setq flycheck-checkers (cons checker (delq checker flycheck-checkers))))
+    (dolist (checkers '((clj-kondo-clj . clojure-joker)
+                        (clj-kondo-cljs . clojurescript-joker)
+                        (clj-kondo-cljc . clojure-joker)
+                        (clj-kondo-edn . edn-joker)))
+      (flycheck-add-next-checker (car checkers) (cons 'error (cdr checkers)))))
+
+ ;; (require 'flycheck-joker)
   (setq powerline-default-separator 'utf-8)
   (setq enable-local-variables :safe)
  ;; Saves temp and backup files to /tmp/ directiry to to clutter worktree
