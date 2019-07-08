@@ -66,6 +66,7 @@ This function should only modify configuration layer settings."
      restclient
      shell-scripts
      syntax-checking
+     spell-checking
      sql
      themes-megapack
      yaml)
