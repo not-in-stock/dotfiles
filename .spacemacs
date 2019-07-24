@@ -54,6 +54,7 @@ This function should only modify configuration layer settings."
               nrepl-log-messages nil)
      (copy-as-format :variables copy-as-format-default "slack")
      docker
+     kotlin
      emacs-lisp
      git
      helm
