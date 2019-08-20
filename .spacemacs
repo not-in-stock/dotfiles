@@ -214,7 +214,7 @@ It should only modify the values of Spacemacs settings."
    ;; refer to the DOCUMENTATION.org for more info on how to create your own
    ;; spaceline theme. Value can be a symbol or list with additional properties.
    ;; (default '(spacemacs :separator wave :separator-scale 1.5))
-   dotspacemacs-mode-line-theme '(spacemacs :separator wave :separator-scale 1.5)
+   dotspacemacs-mode-line-theme '(spacemacs :separator utf-8 :separator-scale 1)
 
    ;; If non-nil the cursor color matches the state color in GUI Emacs.
    ;; (default t)
@@ -497,10 +497,8 @@ before packages are loaded."
                         (clj-kondo-edn . edn-joker)))
       (flycheck-add-next-checker (car checkers) (cons 'error (cdr checkers)))))
 
- ;; (require 'flycheck-joker)
-  (setq powerline-default-separator 'utf-8)
   (setq enable-local-variables :safe)
- ;; Saves temp and backup files to /tmp/ directiry to to clutter worktree
+
   (setq backup-directory-alist
         `((".*" . ,temporary-file-directory)))
   (setq auto-save-file-name-transforms
