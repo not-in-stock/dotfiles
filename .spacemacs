@@ -539,12 +539,12 @@ before packages are loaded."
 
   (add-hook 'clojure-mode-hook
             (lambda ()
-              (setq whitespace-line-column 90)
-              (setq fill-column 90)))
+              (setq whitespace-line-column 100)
+              (setq fill-column 100)))
 
   ;; Make horizontal movement cross lines
   (setq-default evil-cross-lines t)
-  (setq-default default-fill-column 90)
+  (setq-default default-fill-column 100)
 
   (defun cider-project-reset ()
     (interactive)
@@ -654,7 +654,7 @@ before packages are loaded."
 
   (custom-set-variables
    '(evil-want-Y-yank-to-eol nil)
-   '(fill-column 90)
+   '(fill-column 100)
    '(fringe-mode 0 nil (fringe))
    '(magit-branch-read-upstream-first t)
    '(magit-diff-refine-hunk (quote all))
