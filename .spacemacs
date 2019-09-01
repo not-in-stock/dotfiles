@@ -54,6 +54,7 @@ This function should only modify configuration layer settings."
               nrepl-log-messages nil)
      (copy-as-format :variables copy-as-format-default "slack")
      docker
+     kotlin
      emacs-lisp
      git
      helm
@@ -214,7 +215,7 @@ It should only modify the values of Spacemacs settings."
    ;; refer to the DOCUMENTATION.org for more info on how to create your own
    ;; spaceline theme. Value can be a symbol or list with additional properties.
    ;; (default '(spacemacs :separator wave :separator-scale 1.5))
-   dotspacemacs-mode-line-theme '(spacemacs :separator wave :separator-scale 1.5)
+   dotspacemacs-mode-line-theme '(spacemacs :separator utf-8 :separator-scale 1)
 
    ;; If non-nil the cursor color matches the state color in GUI Emacs.
    ;; (default t)
@@ -497,7 +498,6 @@ before packages are loaded."
                         (clj-kondo-edn . edn-joker)))
       (flycheck-add-next-checker (car checkers) (cons 'error (cdr checkers)))))
 
-
   (require 'magit-todos nil t)
   (defun magit-todos-setup-jump-key ()
     "Add key binding to jump to todos section."
@@ -514,6 +514,7 @@ before packages are loaded."
   (setq powerline-default-separator 'utf-8)
   (setq enable-local-variables :safe)
   ;; Saves temp and backup files to /tmp/ directiry to to clutter worktree
+
   (setq backup-directory-alist
         `((".*" . ,temporary-file-directory)))
   (setq auto-save-file-name-transforms
@@ -551,12 +552,12 @@ before packages are loaded."
 
   (add-hook 'clojure-mode-hook
             (lambda ()
-              (setq whitespace-line-column 90)
-              (setq fill-column 90)))
+              (setq whitespace-line-column 100)
+              (setq fill-column 100)))
 
   ;; Make horizontal movement cross lines
   (setq-default evil-cross-lines t)
-  (setq-default default-fill-column 90)
+  (setq-default default-fill-column 100)
 
   (defun cider-project-reset ()
     (interactive)
@@ -666,7 +667,7 @@ before packages are loaded."
 
   (custom-set-variables
    '(evil-want-Y-yank-to-eol nil)
-   '(fill-column 90)
+   '(fill-column 100)
    '(fringe-mode 0 nil (fringe))
    '(magit-branch-read-upstream-first t)
    '(magit-diff-refine-hunk (quote all))
