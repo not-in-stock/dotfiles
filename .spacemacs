@@ -81,7 +81,8 @@ This function should only modify configuration layer settings."
    dotspacemacs-additional-packages
    '(dracula-theme
      flycheck-clj-kondo
-     flycheck-joker)
+     flycheck-joker
+     lispyville)
 
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
