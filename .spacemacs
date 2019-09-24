@@ -82,7 +82,8 @@ This function should only modify configuration layer settings."
    '(dracula-theme
      flycheck-clj-kondo
      flycheck-joker
-     lispyville)
+     lispyville
+     magit-todos)
 
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
@@ -498,7 +499,22 @@ before packages are loaded."
                         (clj-kondo-edn . edn-joker)))
       (flycheck-add-next-checker (car checkers) (cons 'error (cdr checkers)))))
 
+  (require 'magit-todos nil t)
+  (defun magit-todos-setup-jump-key ()
+    "Add key binding to jump to todos section."
+    (define-key magit-status-mode-map "gT" 'magit-todos-jump-to-todos))
+  (defun magit-todos-disable-j ()
+    "Disable 'jT' binding."
+    (define-key magit-todos-section-map "j" nil))
+
+  (defun magit-todos-setup ()
+    (interactive)
+    (add-hook 'magit-todos-mode-hook 'magit-todos-setup-jump-key)
+    (add-hook 'magit-todos-mode-hook 'magit-todos-disable-j))
+
+  (setq powerline-default-separator 'utf-8)
   (setq enable-local-variables :safe)
+  ;; Saves temp and backup files to /tmp/ directiry to to clutter worktree
 
   (setq backup-directory-alist
         `((".*" . ,temporary-file-directory)))
@@ -528,9 +544,6 @@ before packages are loaded."
 
   (spacemacs/set-leader-keys
     "wc" 'prepare-workspace)
-
-  (setq web-mode-engines-alist
-        '(("smarty" . "\\.tpl\\.php\\'")))
 
   (spacemacs/add-all-to-hook 'clojure-mode-hook
                              'turn-on-fci-mode
