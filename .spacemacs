@@ -624,6 +624,7 @@ before packages are loaded."
     (spacemacs/set-leader-keys-for-major-mode m
       "rsn" 'clojure-sort-ns
       "gk" 'cider-find-keyword))
+
   (setq-default
    evil-want-Y-yank-to-eol nil
    evil-cross-lines t
