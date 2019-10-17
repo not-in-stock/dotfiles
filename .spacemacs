@@ -38,6 +38,7 @@ This function should only modify configuration layer settings."
                       auto-completion-enable-sort-by-usage t
                       auto-completion-enable-help-tooltip t)
      (clojure :variables
+              cider-enhanced-cljs-completion-p nil
               cider-font-lock-dynamically '(macro core function var)
               cider-overlays-use-font-lock t
               cider-pprint-fn 'fipp
@@ -50,11 +51,12 @@ This function should only modify configuration layer settings."
               cljr--debug-mode t
               cljr-warn-on-eval nil
               clojure-enable-clj-refactor t
+              clojure-enable-linters 'clj-kondo
+              clojure-toplevel-inside-comment-form t
               nrepl-hide-special-buffers t
               nrepl-log-messages nil)
      (copy-as-format :variables copy-as-format-default "slack")
      docker
-     kotlin
      emacs-lisp
      git
      helm
@@ -83,6 +85,7 @@ This function should only modify configuration layer settings."
      flycheck-clj-kondo
      flycheck-joker
      lispyville
+     kaocha-runner
      magit-todos)
 
    ;; A list of packages that cannot be updated.
@@ -224,15 +227,11 @@ It should only modify the values of Spacemacs settings."
    ;; (default t)
    dotspacemacs-colorize-cursor-according-to-state t
 
-   ;; dotspacemacs-mode-line-theme '(spacemacs :separator utf-8 :separator-scale 1)
-
    ;; Default font, or prioritized list of fonts. `powerline-scale' allows to
    ;; quickly tweak the mode-line size to make separators look not too crappy.
    dotspacemacs-default-font '("Source Code Pro for Powerline"
-                               :size 13
                                :weight normal
                                :width normal)
-
 
    ;; The leader key (default "SPC")
    dotspacemacs-leader-key "SPC"
@@ -548,7 +547,9 @@ before packages are loaded."
     (split-window-below))
 
   (spacemacs/set-leader-keys
-    "wc" 'prepare-workspace)
+    "wc" 'prepare-workspace
+    "en" 'flycheck-next-error
+    "ep" 'flycheck-previous-error)
 
   (spacemacs/add-all-to-hook 'clojure-mode-hook
                              'turn-on-fci-mode
@@ -598,15 +599,16 @@ before packages are loaded."
   (dolist (m '(clojure-mode))
     (spacemacs/set-leader-keys-for-major-mode m
       "j" 'cider-project-reset
-      "cn" 'flycheck-next-error
-      "cp" 'flycheck-previous-error
-      "J" 'cider-dev
       "el" 'cider-inspect-last-result
       "sj" 'cider-connect-sibling-cljs
       "sa" 'cider-default-connect
       "sA" 'cider-connect-remote
       "sC" 'cider-replicate-connection
-      "hc" 'clojure-cheatsheet))
+      "kt" 'kaocha-runner-run-test-at-point
+      "kr" 'kaocha-runner-run-tests
+      "ka" 'kaocha-runner-run-all-tests
+      "kw" 'kaocha-runner-show-warnings
+      "kh" 'kaocha-runner-hide-windows))
 
   (dolist (m '(clojure-mode clojurescript-mode))
     (spacemacs/set-leader-keys-for-major-mode m
@@ -619,6 +621,8 @@ before packages are loaded."
    '(flycheck-info ((t (:underline "#50fa7b"))))
    '(flycheck-warning ((t (:underline "#ffb86c"))))
    '(flyspell-duplicate ((t (:underline "#ffb86c")))))
+      "gk" 'cider-find-keyword
+      "rsn" 'clojure-sort-ns))
 
   (setq-default
    clojure-indent-style :always-align
