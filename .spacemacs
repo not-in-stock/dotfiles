@@ -230,6 +230,7 @@ It should only modify the values of Spacemacs settings."
    ;; Default font, or prioritized list of fonts. `powerline-scale' allows to
    ;; quickly tweak the mode-line size to make separators look not too crappy.
    dotspacemacs-default-font '("Source Code Pro for Powerline"
+                               :size 13
                                :weight normal
                                :width normal)
 
@@ -371,15 +372,14 @@ It should only modify the values of Spacemacs settings."
    ;;                       text-mode
    ;;   :size-limit-kb 1000)
    ;; (default nil)
-   dotspacemacs-line-numbers
-   '(:relative nil
-     :disabled-for-modes dired-mode
-                         doc-view-mode
-                         markdown-mode
-                         org-mode
-                         pdf-view-mode
-                         text-mode
-     :size-limit-kb 1000)
+   dotspacemacs-line-numbers '(:relative nil
+                               :disabled-for-modes dired-mode
+                                                   doc-view-mode
+                                                   markdown-mode
+                                                   org-mode
+                                                   pdf-view-mode
+                                                   text-mode
+                               :size-limit-kb 1000)
 
    ;; Code folding method. Possible values are `evil' and `origami'.
    ;; (default 'evil)
@@ -487,26 +487,55 @@ This function is called at the very end of Spacemacs startup, after layer
 configuration.
 Put your configuration code here, except for variables that should be set
 before packages are loaded."
-  (use-package clojure-mode
-    :ensure t
-    :config
-    (require 'flycheck-joker)
-    (require 'flycheck-clj-kondo)
-    (dolist (checker '(clj-kondo-clj clj-kondo-cljs clj-kondo-cljc clj-kondo-edn))
-      (setq flycheck-checkers (cons checker (delq checker flycheck-checkers))))
-    (dolist (checkers '((clj-kondo-clj . clojure-joker)
-                        (clj-kondo-cljs . clojurescript-joker)
-                        (clj-kondo-cljc . clojure-joker)
-                        (clj-kondo-edn . edn-joker)))
-      (flycheck-add-next-checker (car checkers) (cons 'error (cdr checkers)))))
 
-  (setq hl-sexp-foreground-color nil)
-  (setq hl-sexp-background-color "#333")
+  (custom-set-faces
+   '(linum ((t (:background "#282a36" :foreground "#565761" :slant normal))))
+   '(flyspell-incorrect ((t (:underline "#ff5555"))))
+   '(flycheck-error ((t (:underline "#ff5555"))))
+   '(flycheck-info ((t (:underline "#50fa7b"))))
+   '(flycheck-warning ((t (:underline "#ffb86c"))))
+   '(flyspell-duplicate ((t (:underline "#ffb86c")))))
+
+  (defface re-frame-sub
+    '((t (:foreground "#ffb86c"))) "DrakulaOrange")
+
+  (defface re-frame-evt
+    '((t (:foreground "#ff5555"))) "DrakulaRed")
+
+  (defface re-frame-name
+    '((t (:foreground "#4684f4"))) "GoogleBlue")
+
+  (defun word-after (word)
+    (concat word " \\(([[:graph:]]+\\)"))
+
+  (defun next-word (word)
+    (concat word " \\([[:graph:]]+\\)"))
+
+  (defun word-after-before-slash (word)
+    (concat word " \\(([[:graph:]]+\\/\\)"))
+
+  (font-lock-add-keywords
+   'clojurescript-mode `((,(next-word "defevent-fx") 1 're-frame-name t)
+                         (,(next-word "defevent-db") 1 're-frame-name t)
+                         (,(next-word "defsub") 1 're-frame-name t)
+                         (,(next-word "defsub-raw") 1 're-frame-name t)
+                         (,(word-after "<sub") 1 're-frame-name t)
+                         (,(word-after-before-slash "<sub") 1 'font-lock-type-face t)
+                         (,(word-after ">evt") 1 're-frame-name t)
+                         (,(word-after-before-slash ">evt") 1 'font-lock-type-face t)
+                         ("defsub" 0 're-frame-sub t)
+                         ("defsub-raw" 0 're-frame-sub t)
+                         ("<sub" 0 're-frame-sub t)
+                         ("defevent-fx" 0 're-frame-evt t)
+                         ("defevent-db" 0 're-frame-evt t)
+                         (">evt" 0 're-frame-evt t)))
 
   (require 'magit-todos nil t)
+
   (defun magit-todos-setup-jump-key ()
     "Add key binding to jump to todos section."
     (define-key magit-status-mode-map "gT" 'magit-todos-jump-to-todos))
+
   (defun magit-todos-disable-j ()
     "Disable 'jT' binding."
     (define-key magit-todos-section-map "j" nil))
@@ -516,14 +545,12 @@ before packages are loaded."
     (add-hook 'magit-todos-mode-hook 'magit-todos-setup-jump-key)
     (add-hook 'magit-todos-mode-hook 'magit-todos-disable-j))
 
-  (setq powerline-default-separator 'utf-8)
-  (setq enable-local-variables :safe)
-  ;; Saves temp and backup files to /tmp/ directiry to to clutter worktree
-
-  (setq backup-directory-alist
-        `((".*" . ,temporary-file-directory)))
-  (setq auto-save-file-name-transforms
-        `((".*" ,temporary-file-directory t)))
+  ;; (safe-local-variable-values
+  ;;  (quote
+  ;;   ((cljr-after-warming-ast-cache-hook
+  ;;     lambda
+  ;;     (&rest ignore)
+  ;;     (shell-command "joker ~/workspace/notifications/event_notification.joke ast-index")))))
 
   (spacemacs/toggle-evil-safe-lisp-structural-editing-on-register-hooks)
 
@@ -548,8 +575,8 @@ before packages are loaded."
 
   (spacemacs/set-leader-keys
     "wc" 'prepare-workspace
-    "en" 'flycheck-next-error
-    "ep" 'flycheck-previous-error)
+    "ep" 'flycheck-previous-error
+    "en" 'flycheck-next-error)
 
   (spacemacs/add-all-to-hook 'clojure-mode-hook
                              'turn-on-fci-mode
@@ -557,26 +584,9 @@ before packages are loaded."
                              'evil-cleverparens-mode
                              'flycheck-mode)
 
-  (add-hook 'clojure-mode-hook
-            (lambda ()
-              (setq whitespace-line-column 100)
-              (setq fill-column 100)))
-
-  ;; Make horizontal movement cross lines
-  (setq-default evil-cross-lines t)
-  (setq-default default-fill-column 100)
-
   (defun cider-project-reset ()
     (interactive)
-    (cider-interactive-eval "(dev/reset)"))
-
-  (defun cider-dev ()
-    (interactive)
-    (save-some-buffers)
-    (with-current-buffer (cider-current-repl)
-      (goto-char (point-max))
-      (insert "(dev)")
-      (cider-repl-return)))
+    (cider-interactive-eval "(user/clj-reset!)"))
 
   (defun cider-default-connect ()
     (interactive)
@@ -612,101 +622,26 @@ before packages are loaded."
 
   (dolist (m '(clojure-mode clojurescript-mode))
     (spacemacs/set-leader-keys-for-major-mode m
+      "rsn" 'clojure-sort-ns
       "gk" 'cider-find-keyword))
-
-  (custom-set-faces
-   '(linum ((t (:background "#282a36" :foreground "#565761" :slant normal))))
-   '(flyspell-incorrect ((t (:underline "#ff5555"))))
-   '(flycheck-error ((t (:underline "#ff5555"))))
-   '(flycheck-info ((t (:underline "#50fa7b"))))
-   '(flycheck-warning ((t (:underline "#ffb86c"))))
-   '(flyspell-duplicate ((t (:underline "#ffb86c")))))
-      "gk" 'cider-find-keyword
-      "rsn" 'clojure-sort-ns))
-
   (setq-default
+   evil-want-Y-yank-to-eol nil
+   evil-cross-lines t
+   neo-vc-integration (quote (face))
+   magit-branch-read-upstream-first t
+   magit-diff-refine-hunk (quote all)
+   magit-log-section-commit-count 0
+   fringe-mode nil
+   show-paren-style (quote expression)
    clojure-indent-style :always-align
    evil-want-Y-yank-to-eol nil
    neo-confirm-create-directory (quote off-p)
    neo-confirm-create-file (quote off-p)
    neo-theme (quote nerd))
 
-  (defface re-frame-sub '((t (:foreground "#ffb86c"))) "DrakulaOrange")
-  (defface re-frame-evt '((t (:foreground "#ff5555"))) "DrakulaRed")
-  (defface re-frame-name '((t (:foreground "#4684f4"))) "GoogleBlue")
-
-  (defun word-after (word)
-    (concat word " \\(([[:graph:]]+\\)"))
-
-  (defun next-word (word)
-    (concat word " \\([[:graph:]]+\\)"))
-
-  (defun word-after-before-slash (word)
-    (concat word " \\(([[:graph:]]+\\/\\)"))
-
-  (font-lock-add-keywords
-   'clojurescript-mode `((,(next-word "defevent-fx") 1 're-frame-name t)
-                         (,(next-word "defevent-db") 1 're-frame-name t)
-                         (,(next-word "defsub") 1 're-frame-name t)
-                         (,(next-word "defsub-raw") 1 're-frame-name t)
-                         (,(word-after "<sub") 1 're-frame-name t)
-                         (,(word-after-before-slash "<sub") 1 'font-lock-type-face t)
-                         (,(word-after ">evt") 1 're-frame-name t)
-                         (,(word-after-before-slash ">evt") 1 'font-lock-type-face t)
-                         ("defsub" 0 're-frame-sub t)
-                         ("defsub-raw" 0 're-frame-sub t)
-                         ("<sub" 0 're-frame-sub t)
-                         ("defevent-fx" 0 're-frame-evt t)
-                         ("defevent-db" 0 're-frame-evt t)
-                         (">evt" 0 're-frame-evt t)))
-  (font-lock-add-keywords
-   'log-view-mode `(("\\[.+\\]" 0 'font-lock-function-name-face t)
-                    ("^.\.\.\. [0-9]+\ .+" 0 're-frame-evt t)
-                    ("^Caused\ by\:\ .+" 0 're-frame-evt t)
-                    ("^.at\ .+" 0 're-frame-evt t)
-                    ("^.at\ " 0 're-frame-sub t)
-                    ("\(.+\)$" 0 're-frame-sub t)
-                    ("[0-9]+.$" 0 'font-lock-string-face t)
-                    ("[(.:$){}]" 0 'font-lock-type-face t)
-                    ("" 0 're-frame-sub t)
-                    ("java\.lang\.Exception.+" 0 're-frame-evt t)
-                    ("^[0-9]+" 0 'font-lock-constant-face t)
-                    ("DEBUG" 0 're-frame-sub t)
-                    ("ERROR" 0 're-frame-evt t)
-                    ("INFO" 0 'font-lock-type-face t)))
-
-  (custom-set-variables
-   '(evil-want-Y-yank-to-eol nil)
-   '(fill-column 100)
-   '(fringe-mode 0 nil (fringe))
-   '(magit-branch-read-upstream-first t)
-   '(magit-diff-refine-hunk (quote all))
-   '(magit-log-section-commit-count 0)
-   '(neo-confirm-create-directory (quote off-p))
-   '(neo-confirm-create-file (quote off-p))
-   '(neo-vc-integration (quote (face)))
-   '(safe-local-variable-values
-     (quote
-      ((cljr-libspec-whitelist "^cljs.core.specs.alpha"
-                               "^cljs-time.extend"
-                               "^cljs-time.instant"
-                               "^googlecloud.cloudstorage.storage"
-                               "^day8.re-frame.async-flow-fx"
-                               "^day8.re-frame.http-fx"
-                               "^transportal.events"
-                               "^transportal.interval"
-                               "^transportal.intro")
-       (cider-default-cljs-repl . figwheel)
-       (helm-ag-use-agignore t)
-       (cljr-after-warming-ast-cache-hook lambda
-                                          (&rest ignore)
-                                          (shell-command "joker ~/workspace/notifications/event_notification.joke ast-index")
-                                          (interactive)
-                                          (cider-interactive-eval "(dev/reset)"))
-       (javascript-backend . tern)
-       (javascript-backend . lsp)
-       (go-backend . go-mode)
-       (go-backend . lsp))))))
+  (with-eval-after-load 'clojure-mode
+    (define-clojure-indent
+      (facts 1))))
 
 ;; Do not write anything past this comment. This is where Emacs will
 ;; auto-generate custom variable definitions.
@@ -720,41 +655,27 @@ This function is called at the very end of Spacemacs initialization."
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(evil-want-Y-yank-to-eol nil)
- '(fill-column 100)
- '(fringe-mode 0 nil (fringe))
- '(magit-branch-read-upstream-first t)
- '(magit-diff-refine-hunk (quote all))
- '(magit-log-section-commit-count 0)
- '(neo-confirm-create-directory (quote off-p) t)
- '(neo-confirm-create-file (quote off-p) t)
- '(neo-vc-integration (quote (face)) t)
  '(package-selected-packages
    (quote
     (web-mode evil-nerd-commenter doom-modeline apropospriate-theme flycheck magit zenburn-theme zen-and-art-theme yasnippet-snippets yaml-mode ws-butler writeroom-mode winum white-sand-theme which-key web-beautify volatile-highlights vi-tilde-fringe uuidgen use-package underwater-theme ujelly-theme twilight-theme twilight-bright-theme twilight-anti-bright-theme toxi-theme toc-org tao-theme tangotango-theme tango-plus-theme tango-2-theme tagedit symon sunny-day-theme sublime-themes subatomic256-theme subatomic-theme string-inflection sql-indent spaceline-all-the-icons spacegray-theme soothe-theme solarized-theme soft-stone-theme soft-morning-theme soft-charcoal-theme smyx-theme smeargle slim-mode shrink-path seti-theme scss-mode sass-mode rjsx-mode reverse-theme restclient-helm restart-emacs rebecca-theme rainbow-delimiters railscasts-theme purple-haze-theme pug-mode professional-theme prettier-js popwin planet-theme phpunit phpcbf php-extras php-auto-yasnippets phoenix-dark-pink-theme phoenix-dark-mono-theme persp-mode pcre2el password-generator paradox overseer orgit organic-green-theme org-projectile org-present org-pomodoro org-mime org-download org-bullets org-brain open-junk-file omtose-phellack-theme oldlace-theme occidental-theme obsidian-theme ob-restclient ob-http noctilux-theme neotree naquadah-theme nameless mustang-theme move-text monokai-theme monochrome-theme molokai-theme moe-theme mmm-mode minimal-theme material-theme markdown-toc majapahit-theme magit-svn magit-gitflow madhat2r-theme macrostep lush-theme lorem-ipsum livid-mode linum-relative link-hint light-soap-theme less-css-mode kaolin-themes json-navigator js2-refactor js-doc jbeans-theme jazz-theme ir-black-theme insert-shebang inkpot-theme indent-guide impatient-mode hungry-delete hl-todo highlight-parentheses highlight-numbers highlight-indentation heroku-theme hemisu-theme helm-xref helm-themes helm-swoop helm-purpose helm-projectile helm-org-rifle helm-mode-manager helm-make helm-gitignore helm-git-grep helm-flx helm-descbinds helm-css-scss helm-company helm-c-yasnippet helm-ag hc-zenburn-theme gruvbox-theme gruber-darker-theme grandshell-theme gotham-theme google-translate golden-ratio gnuplot gitignore-templates gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-commit ghub gh-md gandalf-theme fuzzy font-lock+ flycheck-pos-tip flycheck-joker flycheck-bashate flx-ido flatui-theme flatland-theme fish-mode fill-column-indicator farmhouse-theme fancy-battery eziam-theme eyebrowse expand-region exotica-theme evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-org evil-numbers evil-matchit evil-magit evil-lisp-state evil-lion evil-indent-plus evil-iedit-state evil-goggles evil-exchange evil-escape evil-ediff evil-cleverparens evil-args evil-anzu espresso-theme emmet-mode elisp-slime-nav eldoc-eval editorconfig dumb-jump drupal-mode dracula-theme dotenv-mode doom-themes dockerfile-mode docker django-theme diminish define-word darktooth-theme darkokai-theme darkmine-theme darkburn-theme dakrone-theme cyberpunk-theme counsel-projectile copy-as-format company-web company-tern company-statistics company-shell company-restclient company-quickhelp company-php column-enforce-mode color-theme-sanityinc-tomorrow color-theme-sanityinc-solarized clues-theme clojure-snippets clojure-cheatsheet clj-refactor clean-aindent-mode cider-eval-sexp-fu cherry-blossom-theme centered-cursor-mode busybee-theme bubbleberry-theme birds-of-paradise-plus-theme badwolf-theme auto-yasnippet auto-highlight-symbol auto-compile anti-zenburn-theme ample-zen-theme ample-theme alect-themes aggressive-indent afternoon-theme ace-window ace-link ace-jump-helm-line ac-ispell)))
  '(safe-local-variable-values
    (quote
-    ((cljr-libspec-whitelist "^cljs.core.specs.alpha" "^cljs-time.extend" "^cljs-time.instant" "^googlecloud.cloudstorage.storage" "^day8.re-frame.async-flow-fx" "^day8.re-frame.http-fx" "^transportal.events" "^transportal.interval" "^transportal.intro")
-     (cider-default-cljs-repl . figwheel)
+    ((cljr-libspec-whitelist "^day8.re-frame.async-flow-fx" "^day8.re-frame.http-fx" "^honeysql-postgres.format")
+     (cljr-libspec-whitelist "^cljs.core.specs.alpha" "^cljs-time.extend" "^cljs-time.instant" "^googlecloud.cloudstorage.storage" "^day8.re-frame.async-flow-fx" "^day8.re-frame.http-fx" "^transportal.events" "^transportal.interval" "^transportal.intro")
+     (cider-shadow-default-options . ":app")
+     (cider-default-cljs-repl . shadow)
      (helm-ag-use-agignore t)
      (cljr-after-warming-ast-cache-hook lambda
                                         (&rest ignore)
+                                        (shell-command "joker ~/workspace/notifications/event_notification.joke ast-index")
+
                                         (interactive)
-                                        (cider-interactive-eval "(dev/reset)"))
-     (javascript-backend . tern)
-     (javascript-backend . lsp)
-     (go-backend . go-mode)
-     (go-backend . lsp))))
- '(show-paren-style (quote expression)))
+                                        (cider-interactive-eval "(cljs-server-start!)")
+                                        (cider-interactive-eval "(clj-reset!)"))))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(flycheck-error ((t (:underline "#ff5555"))))
- '(flycheck-info ((t (:underline "#50fa7b"))))
- '(flycheck-warning ((t (:underline "#ffb86c"))))
- '(flyspell-duplicate ((t (:underline "#ffb86c"))))
- '(flyspell-incorrect ((t (:underline "#ff5555"))))
- '(linum ((t (:background "#282a36" :foreground "#565761" :slant normal)))))
+ )
 )
