@@ -663,6 +663,7 @@ This function is called at the very end of Spacemacs initialization."
      (helm-ag-use-agignore t)
      (cljr-after-warming-ast-cache-hook lambda
                                         (&rest ignore)
+                                        (shell-command "joker ~/workspace/notifications/event_notification.joke ast-cache")
                                         (interactive)
                                         (cider-interactive-eval "(cljs-server-start!)")
                                         (cider-interactive-eval "(clj-reset!)"))))))
