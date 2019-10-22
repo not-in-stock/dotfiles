@@ -456,7 +456,9 @@ It should only modify the values of Spacemacs settings."
    ;; Run `spacemacs/prettify-org-buffer' when
    ;; visiting README.org files of Spacemacs.
    ;; (default nil)
-   dotspacemacs-pretty-docs nil))
+   dotspacemacs-pretty-docs nil
+
+   package-check-signature nil))
 
 (defun dotspacemacs/user-env ()
   "Environment variables setup.
@@ -545,13 +547,6 @@ before packages are loaded."
     (add-hook 'magit-todos-mode-hook 'magit-todos-setup-jump-key)
     (add-hook 'magit-todos-mode-hook 'magit-todos-disable-j))
 
-  ;; (safe-local-variable-values
-  ;;  (quote
-  ;;   ((cljr-after-warming-ast-cache-hook
-  ;;     lambda
-  ;;     (&rest ignore)
-  ;;     (shell-command "joker ~/workspace/notifications/event_notification.joke ast-index")))))
-
   (spacemacs/toggle-evil-safe-lisp-structural-editing-on-register-hooks)
 
   (setq helm-split-window-inside-p t)
@@ -622,8 +617,8 @@ before packages are loaded."
 
   (dolist (m '(clojure-mode clojurescript-mode))
     (spacemacs/set-leader-keys-for-major-mode m
-      "rsn" 'clojure-sort-ns
-      "gk" 'cider-find-keyword))
+      "gk" 'cider-find-keyword
+      "rsn" 'clojure-sort-ns))
 
   (setq-default
    evil-want-Y-yank-to-eol nil
@@ -668,7 +663,6 @@ This function is called at the very end of Spacemacs initialization."
      (helm-ag-use-agignore t)
      (cljr-after-warming-ast-cache-hook lambda
                                         (&rest ignore)
-                                        (shell-command "joker ~/workspace/notifications/event_notification.joke ast-cache")
                                         (interactive)
                                         (cider-interactive-eval "(cljs-server-start!)")
                                         (cider-interactive-eval "(clj-reset!)"))))))
