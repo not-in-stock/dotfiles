@@ -10,7 +10,6 @@ antigen theme romkatv/powerlevel10k
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
 # OSX
-antigen bundle brew
 antigen bundle osx
 
 # Bundles from the default repo (robbyrussell's oh-my-zsh).
