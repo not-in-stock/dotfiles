@@ -9,6 +9,6 @@
       create: true
       path: profiles.clj
     ~/.spacemacs: .spacemacs
-    ~/.zshrc ./zshrc
+    ~/.zshrc: .zshrc
 - shell:
   - [git submodule update --init --recursive, Installing/updating submodules]
