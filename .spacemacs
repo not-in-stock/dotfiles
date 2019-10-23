@@ -70,7 +70,6 @@ This function should only modify configuration layer settings."
      shell-scripts
      syntax-checking
      sql
-     themes-megapack
      yaml)
 
    ;; List of additional packages that will be installed without being
