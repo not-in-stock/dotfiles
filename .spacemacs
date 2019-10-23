@@ -567,7 +567,13 @@ before packages are loaded."
        (when (evil-insert-state-p)
          (define-key evil-insert-state-map (kbd "C-k") nil)))))
 
+
+  ;; Add lispyville for comments aware editing
   (add-hook 'clojure-mode-hook #'lispyville-mode)
+  (add-hook 'evil-mode
+            (lambda (&rest ignore)
+              (when evil-mode
+                (define-key clojure-mode-map [remap evilnc-comment-operator] 'lispyville-comment-or-uncomment))))
 
   (defun prepare-workspace ()
     (interactive)
