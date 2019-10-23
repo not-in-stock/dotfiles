@@ -492,13 +492,25 @@ configuration.
 Put your configuration code here, except for variables that should be set
 before packages are loaded."
 
+  ;; Fixing configuration issues
+  ;;;; Make hook variable always safe; fixes risky local variable dialog
+  (defvar cljr-after-warming-ast-cache-hook nil)
+  (put 'cljr-after-warming-ast-cache-hook 'safe-local-variable
+       (lambda (x) t))
+
+  ;; Editor coloring
   (custom-set-faces
+   ;;;; Customize line numbers
    '(linum ((t (:background "#282a36" :foreground "#565761" :slant normal))))
    '(flyspell-incorrect ((t (:underline "#ff5555"))))
+   ;;;; Customize flycheck error undelines
+   '(linum ((t (:background "#282a36" :foreground "#565761" :slant normal))))
    '(flycheck-error ((t (:underline "#ff5555"))))
    '(flycheck-info ((t (:underline "#50fa7b"))))
    '(flycheck-warning ((t (:underline "#ffb86c"))))
    '(flyspell-duplicate ((t (:underline "#ffb86c")))))
+
+  ;;;; Project specific editor coloring
 
   (defface re-frame-sub
     '((t (:foreground "#ffb86c"))) "DrakulaOrange")
@@ -509,10 +521,7 @@ before packages are loaded."
   (defface re-frame-name
     '((t (:foreground "#4684f4"))) "GoogleBlue")
 
-  ;; Fix the problem with risky local variables
-  (defvar cljr-after-warming-ast-cache-hook nil)
-  (put 'cljr-after-warming-ast-cache-hook 'safe-local-variable
-       (lambda (x) t))
+  ;;;; Project specific parsing functions
 
   (defun word-after (word)
     (concat word " \\(([[:graph:]]+\\)"))
@@ -522,6 +531,8 @@ before packages are loaded."
 
   (defun word-after-before-slash (word)
     (concat word " \\(([[:graph:]]+\\/\\)"))
+
+  ;;;; Project specific font cusomizations
 
   (font-lock-add-keywords
    'clojurescript-mode `((,(next-word "defevent-fx") 1 're-frame-name t)
@@ -538,6 +549,8 @@ before packages are loaded."
                          ("defevent-fx" 0 're-frame-evt t)
                          ("defevent-db" 0 're-frame-evt t)
                          (">evt" 0 're-frame-evt t)))
+
+  ;; VSC cusomizations
 
   (require 'magit-todos nil t)
 
@@ -558,6 +571,7 @@ before packages are loaded."
 
   (setq helm-split-window-inside-p t)
 
+
   ;; Fixing "C-k" not working with company-completion tooltips
   (add-hook
    'company-completion-started-hook
@@ -566,25 +580,7 @@ before packages are loaded."
        (when (evil-insert-state-p)
          (define-key evil-insert-state-map (kbd "C-k") nil)))))
 
-
-  ;; Add lispyville for comments aware editing
-  (add-hook 'clojure-mode-hook #'lispyville-mode)
-  (add-hook 'evil-mode
-            (lambda (&rest ignore)
-              (when evil-mode
-                (define-key clojure-mode-map [remap evilnc-comment-operator] 'lispyville-comment-or-uncomment))))
-
-  (defun prepare-workspace ()
-    (interactive)
-    (split-window-right)
-    (neotree-find-project-root)
-    (winum-select-window-1)
-    (split-window-below)
-    (winum-select-window-3)
-    (split-window-below))
-
   (spacemacs/set-leader-keys
-    "wc" 'prepare-workspace
     "ep" 'flycheck-previous-error
     "en" 'flycheck-next-error)
 
@@ -592,7 +588,16 @@ before packages are loaded."
                              'turn-on-fci-mode
                              'golden-ratio-mode
                              'evil-cleverparens-mode
-                             'flycheck-mode)
+                             'flycheck-mode
+                             'lispyville-mode)
+
+  ;; Add lispyville remap for comments aware editing
+  (add-hook 'clojure-mode
+            (lambda (&rest ignore)
+              (when evil-mode
+                (define-key clojure-mode-map [remap evilnc-comment-operator] 'lispyville-comment-or-uncomment))))
+
+  ;; Project specific development setup functions
 
   (defun cider-project-reset ()
     (interactive)
@@ -636,19 +641,18 @@ before packages are loaded."
       "rsn" 'clojure-sort-ns))
 
   (setq-default
+   clojure-indent-style :always-align
    evil-want-Y-yank-to-eol nil
    evil-cross-lines t
-   neo-vc-integration (quote (face))
+   fringe-mode nil
    magit-branch-read-upstream-first t
    magit-diff-refine-hunk (quote all)
    magit-log-section-commit-count 0
-   fringe-mode nil
-   show-paren-style (quote expression)
-   clojure-indent-style :always-align
-   evil-want-Y-yank-to-eol nil
+   neo-vc-integration (quote (face))
    neo-confirm-create-directory (quote off-p)
    neo-confirm-create-file (quote off-p)
-   neo-theme (quote nerd))
+   neo-theme (quote nerd)
+   show-paren-style (quote expression))
 
   (with-eval-after-load 'clojure-mode
     (define-clojure-indent
@@ -661,37 +665,37 @@ before packages are loaded."
 This is an auto-generated function, do not modify its content directly, use
 Emacs customize menu instead.
 This function is called at the very end of Spacemacs initialization."
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(package-selected-packages
-   (quote
-    (web-mode evil-nerd-commenter doom-modeline apropospriate-theme flycheck magit zenburn-theme zen-and-art-theme yasnippet-snippets yaml-mode ws-butler writeroom-mode winum white-sand-theme which-key web-beautify volatile-highlights vi-tilde-fringe uuidgen use-package underwater-theme ujelly-theme twilight-theme twilight-bright-theme twilight-anti-bright-theme toxi-theme toc-org tao-theme tangotango-theme tango-plus-theme tango-2-theme tagedit symon sunny-day-theme sublime-themes subatomic256-theme subatomic-theme string-inflection sql-indent spaceline-all-the-icons spacegray-theme soothe-theme solarized-theme soft-stone-theme soft-morning-theme soft-charcoal-theme smyx-theme smeargle slim-mode shrink-path seti-theme scss-mode sass-mode rjsx-mode reverse-theme restclient-helm restart-emacs rebecca-theme rainbow-delimiters railscasts-theme purple-haze-theme pug-mode professional-theme prettier-js popwin planet-theme phpunit phpcbf php-extras php-auto-yasnippets phoenix-dark-pink-theme phoenix-dark-mono-theme persp-mode pcre2el password-generator paradox overseer orgit organic-green-theme org-projectile org-present org-pomodoro org-mime org-download org-bullets org-brain open-junk-file omtose-phellack-theme oldlace-theme occidental-theme obsidian-theme ob-restclient ob-http noctilux-theme neotree naquadah-theme nameless mustang-theme move-text monokai-theme monochrome-theme molokai-theme moe-theme mmm-mode minimal-theme material-theme markdown-toc majapahit-theme magit-svn magit-gitflow madhat2r-theme macrostep lush-theme lorem-ipsum livid-mode linum-relative link-hint light-soap-theme less-css-mode kaolin-themes json-navigator js2-refactor js-doc jbeans-theme jazz-theme ir-black-theme insert-shebang inkpot-theme indent-guide impatient-mode hungry-delete hl-todo highlight-parentheses highlight-numbers highlight-indentation heroku-theme hemisu-theme helm-xref helm-themes helm-swoop helm-purpose helm-projectile helm-org-rifle helm-mode-manager helm-make helm-gitignore helm-git-grep helm-flx helm-descbinds helm-css-scss helm-company helm-c-yasnippet helm-ag hc-zenburn-theme gruvbox-theme gruber-darker-theme grandshell-theme gotham-theme google-translate golden-ratio gnuplot gitignore-templates gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-commit ghub gh-md gandalf-theme fuzzy font-lock+ flycheck-pos-tip flycheck-joker flycheck-bashate flx-ido flatui-theme flatland-theme fish-mode fill-column-indicator farmhouse-theme fancy-battery eziam-theme eyebrowse expand-region exotica-theme evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-org evil-numbers evil-matchit evil-magit evil-lisp-state evil-lion evil-indent-plus evil-iedit-state evil-goggles evil-exchange evil-escape evil-ediff evil-cleverparens evil-args evil-anzu espresso-theme emmet-mode elisp-slime-nav eldoc-eval editorconfig dumb-jump drupal-mode dracula-theme dotenv-mode doom-themes dockerfile-mode docker django-theme diminish define-word darktooth-theme darkokai-theme darkmine-theme darkburn-theme dakrone-theme cyberpunk-theme counsel-projectile copy-as-format company-web company-tern company-statistics company-shell company-restclient company-quickhelp company-php column-enforce-mode color-theme-sanityinc-tomorrow color-theme-sanityinc-solarized clues-theme clojure-snippets clojure-cheatsheet clj-refactor clean-aindent-mode cider-eval-sexp-fu cherry-blossom-theme centered-cursor-mode busybee-theme bubbleberry-theme birds-of-paradise-plus-theme badwolf-theme auto-yasnippet auto-highlight-symbol auto-compile anti-zenburn-theme ample-zen-theme ample-theme alect-themes aggressive-indent afternoon-theme ace-window ace-link ace-jump-helm-line ac-ispell)))
- '(safe-local-variable-values
-   (quote
-    ((cider-shadow-cljs-default-options . "app")
-     (cljr-libspec-whitelist "^day8.re-frame.async-flow-fx" "^day8.re-frame.http-fx" "^honeysql-postgres.format")
-     (cljr-libspec-whitelist "^cljs.core.specs.alpha" "^cljs-time.extend" "^cljs-time.instant" "^googlecloud.cloudstorage.storage" "^day8.re-frame.async-flow-fx" "^day8.re-frame.http-fx" "^transportal.events" "^transportal.interval" "^transportal.intro")
-     (cider-shadow-default-options . ":app")
-     (cider-default-cljs-repl . shadow)
-     (helm-ag-use-agignore t)
-     (cljr-after-warming-ast-cache-hook lambda
-                                        (&rest ignore)
-                                        (notify-ast-cache-warm-up)
-                                        (interactive)
-                                        (cider-interactive-eval "(cljs-server-start!)")
-                                        (cider-interactive-eval "(clj-reset!)"))))))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(flycheck-error ((t (:underline "#ff5555"))))
- '(flycheck-info ((t (:underline "#50fa7b"))))
- '(flycheck-warning ((t (:underline "#ffb86c"))))
- '(flyspell-duplicate ((t (:underline "#ffb86c"))))
- '(flyspell-incorrect ((t (:underline "#ff5555"))))
- '(linum ((t (:background "#282a36" :foreground "#565761" :slant normal)))))
-)
+  (custom-set-variables
+   ;; custom-set-variables was added by Custom.
+   ;; If you edit it by hand, you could mess it up, so be careful.
+   ;; Your init file should contain only one such instance.
+   ;; If there is more than one, they won't work right.
+   '(package-selected-packages
+     (quote
+      (web-mode evil-nerd-commenter doom-modeline apropospriate-theme flycheck magit zenburn-theme zen-and-art-theme yasnippet-snippets yaml-mode ws-butler writeroom-mode winum white-sand-theme which-key web-beautify volatile-highlights vi-tilde-fringe uuidgen use-package underwater-theme ujelly-theme twilight-theme twilight-bright-theme twilight-anti-bright-theme toxi-theme toc-org tao-theme tangotango-theme tango-plus-theme tango-2-theme tagedit symon sunny-day-theme sublime-themes subatomic256-theme subatomic-theme string-inflection sql-indent spaceline-all-the-icons spacegray-theme soothe-theme solarized-theme soft-stone-theme soft-morning-theme soft-charcoal-theme smyx-theme smeargle slim-mode shrink-path seti-theme scss-mode sass-mode rjsx-mode reverse-theme restclient-helm restart-emacs rebecca-theme rainbow-delimiters railscasts-theme purple-haze-theme pug-mode professional-theme prettier-js popwin planet-theme phpunit phpcbf php-extras php-auto-yasnippets phoenix-dark-pink-theme phoenix-dark-mono-theme persp-mode pcre2el password-generator paradox overseer orgit organic-green-theme org-projectile org-present org-pomodoro org-mime org-download org-bullets org-brain open-junk-file omtose-phellack-theme oldlace-theme occidental-theme obsidian-theme ob-restclient ob-http noctilux-theme neotree naquadah-theme nameless mustang-theme move-text monokai-theme monochrome-theme molokai-theme moe-theme mmm-mode minimal-theme material-theme markdown-toc majapahit-theme magit-svn magit-gitflow madhat2r-theme macrostep lush-theme lorem-ipsum livid-mode linum-relative link-hint light-soap-theme less-css-mode kaolin-themes json-navigator js2-refactor js-doc jbeans-theme jazz-theme ir-black-theme insert-shebang inkpot-theme indent-guide impatient-mode hungry-delete hl-todo highlight-parentheses highlight-numbers highlight-indentation heroku-theme hemisu-theme helm-xref helm-themes helm-swoop helm-purpose helm-projectile helm-org-rifle helm-mode-manager helm-make helm-gitignore helm-git-grep helm-flx helm-descbinds helm-css-scss helm-company helm-c-yasnippet helm-ag hc-zenburn-theme gruvbox-theme gruber-darker-theme grandshell-theme gotham-theme google-translate golden-ratio gnuplot gitignore-templates gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-commit ghub gh-md gandalf-theme fuzzy font-lock+ flycheck-pos-tip flycheck-joker flycheck-bashate flx-ido flatui-theme flatland-theme fish-mode fill-column-indicator farmhouse-theme fancy-battery eziam-theme eyebrowse expand-region exotica-theme evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-org evil-numbers evil-matchit evil-magit evil-lisp-state evil-lion evil-indent-plus evil-iedit-state evil-goggles evil-exchange evil-escape evil-ediff evil-cleverparens evil-args evil-anzu espresso-theme emmet-mode elisp-slime-nav eldoc-eval editorconfig dumb-jump drupal-mode dracula-theme dotenv-mode doom-themes dockerfile-mode docker django-theme diminish define-word darktooth-theme darkokai-theme darkmine-theme darkburn-theme dakrone-theme cyberpunk-theme counsel-projectile copy-as-format company-web company-tern company-statistics company-shell company-restclient company-quickhelp company-php column-enforce-mode color-theme-sanityinc-tomorrow color-theme-sanityinc-solarized clues-theme clojure-snippets clojure-cheatsheet clj-refactor clean-aindent-mode cider-eval-sexp-fu cherry-blossom-theme centered-cursor-mode busybee-theme bubbleberry-theme birds-of-paradise-plus-theme badwolf-theme auto-yasnippet auto-highlight-symbol auto-compile anti-zenburn-theme ample-zen-theme ample-theme alect-themes aggressive-indent afternoon-theme ace-window ace-link ace-jump-helm-line ac-ispell)))
+   '(safe-local-variable-values
+     (quote
+      ((cider-shadow-cljs-default-options . "app")
+       (cljr-libspec-whitelist "^day8.re-frame.async-flow-fx" "^day8.re-frame.http-fx" "^honeysql-postgres.format")
+       (cljr-libspec-whitelist "^cljs.core.specs.alpha" "^cljs-time.extend" "^cljs-time.instant" "^googlecloud.cloudstorage.storage" "^day8.re-frame.async-flow-fx" "^day8.re-frame.http-fx" "^transportal.events" "^transportal.interval" "^transportal.intro")
+       (cider-shadow-default-options . ":app")
+       (cider-default-cljs-repl . shadow)
+       (helm-ag-use-agignore t)
+       (cljr-after-warming-ast-cache-hook lambda
+                                          (&rest ignore)
+                                          (notify-ast-cache-warm-up)
+                                          (interactive)
+                                          (cider-interactive-eval "(cljs-server-start!)")
+                                          (cider-interactive-eval "(clj-reset!)"))))))
+  (custom-set-faces
+   ;; custom-set-faces was added by Custom.
+   ;; If you edit it by hand, you could mess it up, so be careful.
+   ;; Your init file should contain only one such instance.
+   ;; If there is more than one, they won't work right.
+   '(flycheck-error ((t (:underline "#ff5555"))))
+   '(flycheck-info ((t (:underline "#50fa7b"))))
+   '(flycheck-warning ((t (:underline "#ffb86c"))))
+   '(flyspell-duplicate ((t (:underline "#ffb86c"))))
+   '(flyspell-incorrect ((t (:underline "#ff5555"))))
+   '(linum ((t (:background "#282a36" :foreground "#565761" :slant normal)))))
+  )
