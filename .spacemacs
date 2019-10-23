@@ -567,6 +567,8 @@ before packages are loaded."
        (when (evil-insert-state-p)
          (define-key evil-insert-state-map (kbd "C-k") nil)))))
 
+  (add-hook 'clojure-mode-hook #'lispyville-mode)
+
   (defun prepare-workspace ()
     (interactive)
     (split-window-right)
@@ -672,7 +674,7 @@ This function is called at the very end of Spacemacs initialization."
      (cljr-after-warming-ast-cache-hook lambda
                                         (&rest ignore)
                                         (eval '(print "x"))
-                                         ;; (notify-ast-cache-warm-up)
+                                        (notify-ast-cache-warm-up)
                                         (interactive)
                                         (cider-interactive-eval "(cljs-server-start!)")
                                         (cider-interactive-eval "(clj-reset!)"))))))
