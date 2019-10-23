@@ -483,6 +483,9 @@ This function is called only while dumping Spacemacs configuration. You can
 dump."
   )
 
+(defun notify-ast-cache-warm-up ()
+  (shell-command "joker ~/workspace/notifications/event_notification.joke ast-cache"))
+
 (defun dotspacemacs/user-config ()
   "Configuration for user code:
 This function is called at the very end of Spacemacs startup, after layer
@@ -506,6 +509,11 @@ before packages are loaded."
 
   (defface re-frame-name
     '((t (:foreground "#4684f4"))) "GoogleBlue")
+
+  ;; Fix the problem with risky local variables
+  (defvar cljr-after-warming-ast-cache-hook nil)
+  (put 'cljr-after-warming-ast-cache-hook 'safe-local-variable
+       (lambda (x) t))
 
   (defun word-after (word)
     (concat word " \\(([[:graph:]]+\\)"))
@@ -663,7 +671,8 @@ This function is called at the very end of Spacemacs initialization."
      (helm-ag-use-agignore t)
      (cljr-after-warming-ast-cache-hook lambda
                                         (&rest ignore)
-                                        (shell-command "joker ~/workspace/notifications/event_notification.joke ast-cache")
+                                        (eval '(print "x"))
+                                         ;; (notify-ast-cache-warm-up)
                                         (interactive)
                                         (cider-interactive-eval "(cljs-server-start!)")
                                         (cider-interactive-eval "(clj-reset!)"))))))
