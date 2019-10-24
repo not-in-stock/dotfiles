@@ -598,7 +598,7 @@ before packages are loaded."
   (add-hook 'clojure-mode-hook
             (lambda (&rest ignore)
               (when evil-mode
-                (define-key clojure-mode-map [remap evilnc-comment-operator] 'lispyville-comment-or-uncomment))))
+                (define-key clojure-mode-map [remap evil-commentary] 'lispyville-comment-or-uncomment))))
 
   ;; Project specific development setup functions
   (defun cider-project-reset ()
