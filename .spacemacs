@@ -584,6 +584,9 @@ before packages are loaded."
        (when (evil-insert-state-p)
          (define-key evil-insert-state-map (kbd "C-k") nil)))))
 
+
+  (spacemacs/toggle-mode-line-minor-modes-off)
+
   (spacemacs/set-leader-keys
     "ep" 'flycheck-previous-error
     "en" 'flycheck-next-error)
