@@ -56,6 +56,7 @@ This function should only modify configuration layer settings."
               nrepl-hide-special-buffers t
               nrepl-log-messages nil)
      (copy-as-format :variables copy-as-format-default "slack")
+     evil-commentary
      docker
      emacs-lisp
      git
@@ -584,6 +585,8 @@ before packages are loaded."
     "ep" 'flycheck-previous-error
     "en" 'flycheck-next-error)
 
+  (add-hook 'emacs-lisp-mode-hook #'lispyville-mode)
+
   (spacemacs/add-all-to-hook 'clojure-mode-hook
                              'turn-on-fci-mode
                              'golden-ratio-mode
@@ -598,7 +601,6 @@ before packages are loaded."
                 (define-key clojure-mode-map [remap evilnc-comment-operator] 'lispyville-comment-or-uncomment))))
 
   ;; Project specific development setup functions
-
   (defun cider-project-reset ()
     (interactive)
     (cider-interactive-eval "(user/clj-reset!)"))
