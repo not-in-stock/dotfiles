@@ -592,7 +592,7 @@ before packages are loaded."
                              'lispyville-mode)
 
   ;; Add lispyville remap for comments aware editing
-  (add-hook 'clojure-mode
+  (add-hook 'clojure-mode-hook
             (lambda (&rest ignore)
               (when evil-mode
                 (define-key clojure-mode-map [remap evilnc-comment-operator] 'lispyville-comment-or-uncomment))))
