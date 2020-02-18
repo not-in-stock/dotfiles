@@ -1,10 +1,10 @@
 {:user {:plugins [[lein-ancient "0.6.15"]
-                  [jonase/eastwood "0.3.6"]
+                  [jonase/eastwood "0.3.7"]
                   [lein-bikeshed "0.5.2"]
-                  [lein-cljfmt "0.6.4"]
+                  [lein-cljfmt "0.6.6"]
                   [lein-count "1.0.9"]
                   [lein-hiera "1.1.0"]
-                  [lein-kibit "0.1.7"]]
+                  [lein-kibit "0.1.8"]]
         :dependencies [[nrepl "0.6.0"]]
         :aliases {"anc" ^{:doc "Check all dependencies for updates"}
                   ["do"
@@ -22,5 +22,5 @@
                   ["-U" "do" "clean" ["repl" ":headless"]]
                   "deps-dev" ^{:doc "Run lein deps with repl profile"}
                   ["-U" "with-profile" "repl" "deps"]}}
- :repl {:plugins [[cider/cider-nrepl "0.23.0-SNAPSHOT"]
+ :repl {:plugins [[cider/cider-nrepl "0.23.0"]
                   [refactor-nrepl "2.5.0-SNAPSHOT"]]}}
