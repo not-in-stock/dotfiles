@@ -2,6 +2,9 @@
 ;; This file is loaded by Spacemacs at startup.
 ;; It must be stored in your home directory.
 
+(defun cider-repl-prompt-show-a (namespace)
+  (concat (format-time-string "%d-%m-%y %H:%M:%S") " " namespace " >"))
+
 (defun dotspacemacs/layers ()
   "Layer configuration:
 This function should only modify configuration layer settings."
@@ -45,7 +48,7 @@ This function should only modify configuration layer settings."
               cider-prompt-for-symbol nil
               cider-repl-display-help-banner nil
               cider-repl-display-in-current-window t
-              cider-repl-prompt-function 'cider-repl-prompt-abbreviated
+              cider-repl-prompt-function 'cider-repl-prompt-show-a
               cider-repl-toggle-pretty-printing t
               cider-repl-use-pretty-printing t
               cljr--debug-mode t
@@ -377,13 +380,13 @@ It should only modify the values of Spacemacs settings."
    ;;   :size-limit-kb 1000)
    ;; (default nil)
    dotspacemacs-line-numbers '(:relative nil
-                               :disabled-for-modes dired-mode
-                                                   doc-view-mode
-                                                   markdown-mode
-                                                   org-mode
-                                                   pdf-view-mode
-                                                   text-mode
-                               :size-limit-kb 1000)
+                                         :disabled-for-modes dired-mode
+                                         doc-view-mode
+                                         markdown-mode
+                                         org-mode
+                                         pdf-view-mode
+                                         text-mode
+                                         :size-limit-kb 1000)
 
    ;; Code folding method. Possible values are `evil' and `origami'.
    ;; (default 'evil)
