@@ -1,0 +1,13 @@
+- clean: ['~']
+- link:
+    ~/.vimrc: vimrc
+    ~/.config/ranger:
+      create: true
+      path: ranger/
+    ~/.lein/profiles.clj:
+      create: true
+      path: profiles.clj
+    ~/.spacemacs: .spacemacs
+    ~/.zshrc: .zshrc
+- shell:
+  - [git submodule update --init --recursive, Installing/updating submodules]
