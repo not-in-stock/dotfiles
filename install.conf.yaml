@@ -7,7 +7,7 @@
     ~/.lein/profiles.clj:
       create: true
       path: profiles.clj
-    ~/.spacemacs: .spacemacs
+    ~/spacemacs.el: .spacemacs
     ~/.zshrc: .zshrc
 - shell:
   - [git submodule update --init --recursive, Installing/updating submodules]
