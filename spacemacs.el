@@ -567,6 +567,11 @@ before packages are loaded."
 
   (spacemacs/toggle-mode-line-minor-modes-off)
 
+  (use-package clojure-mode
+    :ensure t
+    :config
+    (require 'flycheck-clj-kondo))
+
   (custom-set-faces
    ;;;; Customize line numbers
    '(linum ((t (:background "#282a36" :foreground "#565761" :slant normal))))
