@@ -46,7 +46,6 @@ This function should only modify configuration layer settings."
               cider-prompt-for-symbol nil
               cider-repl-display-help-banner nil
               cider-repl-display-in-current-window t
-              cider-repl-prompt-function 'cider-repl-prompt-show-a
               cider-repl-toggle-pretty-printing t
               cider-repl-use-pretty-printing t
               cljr--debug-mode t
@@ -68,7 +67,46 @@ This function should only modify configuration layer settings."
      ;; VCS
      git
      ;; Editor
-     lsp
+     ;; (lsp :variables
+     ;;      ;; Formatting and indentation - use Cider instead
+     ;;      lsp-enable-on-type-formatting t
+     ;;      ;; Set to nil to use CIDER features instead of LSP UI
+     ;;      lsp-enable-indentation t
+     ;;      lsp-enable-snippet t  ;; to test again
+
+     ;;      ;; symbol highlighting - `lsp-toggle-symbol-highlight` toggles highlighting
+     ;;      ;; subtle highlighting for doom-gruvbox-light theme defined in dotspacemacs/user-config
+     ;;      lsp-enable-symbol-highlighting t
+
+     ;;      ;; Show lint error indicator in the mode line
+     ;;      lsp-modeline-diagnostics-enable t
+     ;;      ;; lsp-modeline-diagnostics-scope :workspace
+
+     ;;      ;; popup documentation boxes
+     ;;      ;; lsp-ui-doc-enable nil          ;; disable all doc popups
+     ;;      lsp-ui-doc-show-with-cursor nil   ;; doc popup for cursor
+     ;;      ;; lsp-ui-doc-show-with-mouse t   ;; doc popup for mouse
+     ;;      ;; lsp-ui-doc-delay 2                ;; delay in seconds for popup to display
+     ;;      lsp-ui-doc-include-signature t    ;; include function signature
+     ;;      ;; lsp-ui-doc-position 'at-point  ;; top bottom at-point
+     ;;      lsp-ui-doc-alignment 'window      ;; frame window
+
+     ;;      ;; code actions and diagnostics text as right-hand side of buffer
+     ;;      lsp-ui-sideline-enable nil
+     ;;      lsp-ui-sideline-show-code-actions nil
+     ;;      ;; lsp-ui-sideline-delay 500
+
+     ;;      ;; lsp-ui-sideline-show-diagnostics nil
+
+     ;;      ;; reference count for functions (assume their maybe other lenses in future)
+     ;;      lsp-lens-enable t
+
+     ;;      ;; Efficient use of space in treemacs-lsp display
+     ;;      treemacs-space-between-root-nodes nil
+
+     ;;      ;; Optimization for large files
+     ;;      lsp-file-watch-threshold 10000
+     ;;      lsp-log-io nil)
      neotree
      helm
      auto-completion
@@ -85,7 +123,7 @@ This function should only modify configuration layer settings."
    ;; `:location' property: '(your-package :location "~/path/to/your-package/")
    ;; Also include the dependencies as they will not be resolved automatically.
    dotspacemacs-additional-packages '(dracula-theme
-                                      flycheck-clj-kondo
+                                      ;; flycheck-clj-kondo
                                       lispyville
                                       magit-todos)
 
@@ -572,6 +610,19 @@ before packages are loaded."
     :config
     (require 'flycheck-clj-kondo))
 
+  ;; (use-package lsp-mode
+  ;;   :ensure t
+  ;;   :hook ((clojure-mode-hook . lsp))
+  ;;   :commands lsp
+  ;;   :custom ((lsp-clojure-server-command '("~/.local/apps/clojure-lsp-server-clj-kondo")))
+  ;;   :config (dolist  (m '(clojure-mode clojurescript-mode))
+  ;;             (add-to-list 'lsp-language-id-configuration `(,m . "clojure"))))
+
+
+  ;; (setq lsp-ui-sideline-enable nil)
+
+  ;; (setq lsp-modeline-diagnostics-scope :workspace)
+
   (custom-set-faces
    ;;;; Customize line numbers
    '(linum ((t (:background "#282a36" :foreground "#565761" :slant normal))))
@@ -628,8 +679,6 @@ before packages are loaded."
     "en" 'flycheck-next-error)
 
   (spacemacs/add-all-to-hook 'clojure-mode-hook
-                             'emacs-lisp-mode-hook
-                             'turn-on-fci-mode
                              'golden-ratio-mode
                              'evil-cleverparens-mode
                              'flycheck-mode

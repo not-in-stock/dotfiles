@@ -7,6 +7,9 @@
     ~/.lein/profiles.clj:
       create: true
       path: profiles.clj
+    ~/.config/fish/fish_plugins:
+      create: true
+      path: fish_plugins
     ~/.spacemacs: spacemacs.el
     ~/.zshrc: .zshrc
 - shell:
