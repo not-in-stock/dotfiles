@@ -6,9 +6,8 @@ set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 
 Plugin 'VundleVim/Vundle.vim'
-
 Plugin 'tpope/vim-fireplace'
-Plugin 'altercation/vim-colors-solarized'
+Plugin 'dracula/vim', { 'name': 'dracula' }
 Plugin 'rainbow_parentheses.vim'
 Plugin 'bling/vim-airline'
 Plugin 'scrooloose/nerdtree'
@@ -23,6 +22,9 @@ Plugin 'kien/ctrlp.vim'
 Plugin 'tpope/vim-fugitive'
 Plugin 'tpope/vim-dispatch'
 
+
+call vundle#end()
+colorscheme dracula
 filetype plugin indent on
 
 set autoindent
@@ -41,15 +43,13 @@ set ttimeoutlen=50
 set ts=2 sts=2 sw=2 expandtab
 set visualbell
 
-let g:solarized_termcolors=256
-set background=dark
-colorscheme solarized
 
 au VimEnter * RainbowParenthesesToggle
 au Syntax * RainbowParenthesesLoadRound
 au Syntax * RainbowParenthesesLoadSquare
 au Syntax * RainbowParenthesesLoadBraces
 
+let g:snipMate = { 'snippet_version' : 1 }
 let mapleader=","
 nnoremap ; :
 noremap <up> <nop>
