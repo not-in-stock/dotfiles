@@ -691,7 +691,8 @@ before packages are loaded."
   (add-hook 'clojure-mode-hook
             (lambda (&rest ignore)
               (when evil-mode
-                (define-key clojure-mode-map [remap evil-commentary] 'lispyville-comment-or-uncomment))))
+                (define-key clojure-mode-map [remap evil-commentary]
+                  'lispyville-comment-or-uncomment))))
 
   (defun cider-default-connect ()
     (interactive)
