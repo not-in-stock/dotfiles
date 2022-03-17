@@ -726,6 +726,14 @@ before packages are loaded."
       "gk" 'cider-find-keyword
       "rsn" 'clojure-sort-ns))
 
+  ;; ============ Neotree ============
+
+  (setq-default
+   neo-vc-integration '(face)
+   neo-confirm-create-directory 'off-p
+   neo-confirm-create-file 'off-p
+   neo-theme 'nerd)
+
   (setq-default
    clojure-indent-style :always-align
    evil-want-Y-yank-to-eol nil
@@ -735,10 +743,6 @@ before packages are loaded."
    helm-ag-use-agignore t
    magit-diff-refine-hunk 'all
    magit-log-section-commit-count 0
-   neo-vc-integration '(face)
-   neo-confirm-create-directory 'off-p
-   neo-confirm-create-file 'off-p
-   neo-theme 'nerd
    show-paren-style 'expression)
 
   (with-eval-after-load 'clojure-mode
