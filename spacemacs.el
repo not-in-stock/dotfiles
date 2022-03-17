@@ -32,13 +32,7 @@ This function should only modify configuration layer settings."
 
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
-   '(typescript
-     ;; ----------------------------------------------------------------
-     ;; Example of useful layers you may want to use right away.
-     ;; Uncomment some layer names and press `SPC f e R'
-     ;; to install them.
-     ;; ----------------------------------------------------------------
-     ;; languages
+   '(;; languages
      (clojure :variables
               cider-enhanced-cljs-completion-p nil
               cider-font-lock-dynamically '(macro core function var)
@@ -58,6 +52,7 @@ This function should only modify configuration layer settings."
               nrepl-log-messages nil)
      emacs-lisp
      javascript
+     typescript
      sql
      ;; Markup & Configs
      html
