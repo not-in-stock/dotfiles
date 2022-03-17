@@ -103,7 +103,7 @@ This function should only modify configuration layer settings."
      ;;      ;; Optimization for large files
      ;;      lsp-file-watch-threshold 10000
      ;;      lsp-log-io nil)
-     neotree
+     ;; neotree
      helm
      auto-completion
      syntax-checking
@@ -728,11 +728,11 @@ before packages are loaded."
 
   ;; ============ Neotree ============
 
-  (setq-default
-   neo-vc-integration '(face)
-   neo-confirm-create-directory 'off-p
-   neo-confirm-create-file 'off-p
-   neo-theme 'nerd)
+  ;; (setq-default
+  ;;  neo-vc-integration '(face)
+  ;;  neo-confirm-create-directory 'off-p
+  ;;  neo-confirm-create-file 'off-p
+  ;;  neo-theme 'nerd)
 
   (setq-default
    clojure-indent-style :always-align
