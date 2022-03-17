@@ -103,6 +103,10 @@ This function should only modify configuration layer settings."
      ;;      ;; Optimization for large files
      ;;      lsp-file-watch-threshold 10000
      ;;      lsp-log-io nil)
+     (treemacs :variables
+               treemacs-use-scope-type 'Perspectives
+               treemacs-use-git-mode 'deferred
+               treemacs-no-png-images t)
      ;; neotree
      helm
      auto-completion
@@ -725,6 +729,18 @@ before packages are loaded."
     (spacemacs/set-leader-keys-for-major-mode m
       "gk" 'cider-find-keyword
       "rsn" 'clojure-sort-ns))
+
+  ;; ============ Treemacs ============
+
+  (require 'treemacs)
+  (require 'treemacs-themes)
+
+  (treemacs-modify-theme "Default"
+    :icon-directory "/other/icons/dir"
+    :config
+    (progn
+      (treemacs-create-icon :icon "▸ " :extensions (dir-closed) :fallback "▸ ")
+      (treemacs-create-icon :icon "▾ " :extensions (dir-open) :fallback "▾ ")))
 
   ;; ============ Neotree ============
 
