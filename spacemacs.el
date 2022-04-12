@@ -752,8 +752,8 @@ before packages are loaded."
    show-paren-style 'expression)
 
   (with-eval-after-load 'clojure-mode
-   (define-clojure-indent
-     (facts 1))))
+    (define-clojure-indent
+      (facts 1))))
 
 ;; Do not write anything past this comment. This is where Emacs will
 ;; auto-generate custom variable definitions.
