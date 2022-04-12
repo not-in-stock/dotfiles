@@ -62,47 +62,37 @@ This function should only modify configuration layer settings."
      docker
      ;; VCS
      git
-     ;; Editor
-     ;; (lsp :variables
-     ;;      ;; Formatting and indentation - use Cider instead
-     ;;      lsp-enable-on-type-formatting t
-     ;;      ;; Set to nil to use CIDER features instead of LSP UI
-     ;;      lsp-enable-indentation t
-     ;;      lsp-enable-snippet t  ;; to test again
+     (lsp :variables
+          ;; symbol highlighting - `lsp-toggle-symbol-highlight` toggles highlighting
+          lsp-enable-symbol-highlighting t
 
-     ;;      ;; symbol highlighting - `lsp-toggle-symbol-highlight` toggles highlighting
-     ;;      ;; subtle highlighting for doom-gruvbox-light theme defined in dotspacemacs/user-config
-     ;;      lsp-enable-symbol-highlighting t
+          ;; Show lint error indicator in the mode line
+          lsp-modeline-diagnostics-enable t
+          ;; lsp-modeline-diagnostics-scope :workspace
 
-     ;;      ;; Show lint error indicator in the mode line
-     ;;      lsp-modeline-diagnostics-enable t
-     ;;      ;; lsp-modeline-diagnostics-scope :workspace
+          ;; popup documentation boxes
+          ;; lsp-ui-doc-enable nil          ;; disable all doc popups
+          lsp-ui-doc-show-with-cursor nil   ;; doc popup for cursor
+          ;; lsp-ui-doc-show-with-mouse t   ;; doc popup for mouse
+          ;; lsp-ui-doc-delay 2                ;; delay in seconds for popup to display
+          lsp-ui-doc-include-signature t    ;; include function signature
+          ;; lsp-ui-doc-position 'at-point  ;; top bottom at-point
+          lsp-ui-doc-alignment 'window      ;; frame window
 
-     ;;      ;; popup documentation boxes
-     ;;      ;; lsp-ui-doc-enable nil          ;; disable all doc popups
-     ;;      lsp-ui-doc-show-with-cursor nil   ;; doc popup for cursor
-     ;;      ;; lsp-ui-doc-show-with-mouse t   ;; doc popup for mouse
-     ;;      ;; lsp-ui-doc-delay 2                ;; delay in seconds for popup to display
-     ;;      lsp-ui-doc-include-signature t    ;; include function signature
-     ;;      ;; lsp-ui-doc-position 'at-point  ;; top bottom at-point
-     ;;      lsp-ui-doc-alignment 'window      ;; frame window
+          ;; code actions and diagnostics text as right-hand side of buffer
+          lsp-ui-sideline-enable nil
+          lsp-ui-sideline-show-code-actions nil
+          ;; lsp-ui-sideline-delay 500
 
-     ;;      ;; code actions and diagnostics text as right-hand side of buffer
-     ;;      lsp-ui-sideline-enable nil
-     ;;      lsp-ui-sideline-show-code-actions nil
-     ;;      ;; lsp-ui-sideline-delay 500
+          lsp-enable-indentation nil
 
-     ;;      ;; lsp-ui-sideline-show-diagnostics nil
-
-     ;;      ;; reference count for functions (assume their maybe other lenses in future)
-     ;;      lsp-lens-enable t
-
-     ;;      ;; Efficient use of space in treemacs-lsp display
-     ;;      treemacs-space-between-root-nodes nil
-
-     ;;      ;; Optimization for large files
-     ;;      lsp-file-watch-threshold 10000
-     ;;      lsp-log-io nil)
+          ;; lsp-ui-sideline-show-diagnostics nil
+          lsp-headerline-breadcrumb-icons-enable nil
+          ;; reference count for functions (assume their maybe other lenses in future)
+          lsp-lens-enable t
+          ;; Optimization for large files
+          lsp-file-watch-threshold 10000
+          lsp-log-io nil)
      (treemacs :variables
                treemacs-use-scope-type 'Perspectives
                treemacs-use-git-mode 'deferred
