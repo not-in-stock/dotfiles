@@ -685,6 +685,10 @@ before packages are loaded."
     "ep" 'flycheck-previous-error
     "en" 'flycheck-next-error)
 
+  (spacemacs/add-all-to-hook 'emacs-lisp-mode-hook
+                             'evil-cleverparens-mode
+                             'lispyville-mode)
+
   (spacemacs/add-all-to-hook 'clojure-mode-hook
                              'zoom-mode
                              'evil-cleverparens-mode
