@@ -97,11 +97,21 @@ This function should only modify configuration layer settings."
           ;; Optimization for large files
           lsp-file-watch-threshold 10000
           lsp-log-io nil)
+
+     ;; Project Tree
      (treemacs :variables
+               ;; Efficient use of space in treemacs-lsp display
+               treemacs-space-between-root-nodes nil
                treemacs-use-scope-type 'Perspectives
                treemacs-use-git-mode 'deferred
-               treemacs-no-png-images t)
-     ;; neotree
+               treemacs-no-png-images t
+               treemacs-window-background-color (cons (face-attribute 'vertical-border :background)
+                                                      (face-attribute 'default :background))
+               left-fringe-width 9
+               right-fringe-width 0
+               cursor-type nil
+               evil-treemacs-state-cursor nil
+               treemacs-show-cursor nil)
      helm
      auto-completion
      syntax-checking
