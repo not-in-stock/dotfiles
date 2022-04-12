@@ -754,16 +754,13 @@ before packages are loaded."
   ;;  neo-confirm-create-file 'off-p
   ;;  neo-theme 'nerd)
 
-  (setq-default
-   clojure-indent-style :always-align
-   evil-want-Y-yank-to-eol nil
-   evil-cross-lines t
-   fringe-mode nil
-   magit-branch-read-upstream-first t
-   helm-ag-use-agignore t
-   magit-diff-refine-hunk 'all
-   magit-log-section-commit-count 0
-   show-paren-style 'expression)
+  (setq-default evil-want-Y-yank-to-eol nil
+                evil-cross-lines t
+                helm-ag-use-agignore t
+                magit-branch-read-upstream-first t
+                magit-diff-refine-hunk 'all
+                magit-log-section-commit-count 0
+                show-paren-style 'expression)
 
   (with-eval-after-load 'clojure-mode
     (define-clojure-indent
