@@ -34,20 +34,24 @@ This function should only modify configuration layer settings."
    dotspacemacs-configuration-layers
    '(;; languages
      (clojure :variables
-              cider-enhanced-cljs-completion-p nil
-              cider-font-lock-dynamically '(macro core function var)
-              cider-overlays-use-font-lock t
-              cider-pprint-fn 'fipp
-              cider-prompt-for-symbol nil
-              cider-repl-display-help-banner nil
-              cider-repl-display-in-current-window t
-              cider-repl-toggle-pretty-printing t
-              cider-repl-use-pretty-printing t
-              cljr--debug-mode t
-              cljr-warn-on-eval nil
+              ;; cider-enhanced-cljs-completion-p nil
+              ;; cider-font-lock-dynamically '(macro core function var)
+              clojure-enable-kaocha-runner t          ;; enable Kaocha test runner
               clojure-enable-clj-refactor t
-              clojure-enable-linters 'clj-kondo
-              clojure-toplevel-inside-comment-form t
+              clojure-toplevel-inside-comment-form t  ;; evaluate expressions in comment as top level
+
+              cider-overlays-use-font-lock t
+              cider-repl-display-help-banner nil      ;; disable help banner
+              cider-pprint-fn 'puget                  ;; 'fipp ;; pretty printing with sorted keys / set values
+              ;; cider-prompt-for-symbol nil
+              ;; cider-repl-display-in-current-window t
+              cider-repl-use-pretty-printing t
+              cider-repl-toggle-pretty-printing t
+              cider-repl-buffer-size-limit 200        ;; limit lines shown in REPL buffer
+
+              ;; cljr--debug-mode t
+              ;; cljr-warn-on-eval nil
+
               nrepl-hide-special-buffers t
               nrepl-log-messages nil)
      emacs-lisp
