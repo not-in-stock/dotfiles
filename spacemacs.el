@@ -642,8 +642,14 @@ before packages are loaded."
   ;;   :config (dolist  (m '(clojure-mode clojurescript-mode))
   ;;             (add-to-list 'lsp-language-id-configuration `(,m . "clojure"))))
 
+  (require 'zoom)
 
-  ;; (setq lsp-ui-sideline-enable nil)
+  (with-eval-after-load 'zoom
+    (setq zoom-size '(0.6 . 0.6)
+          zoom-ignored-major-modes '(treemacs-mode) ;; comment
+          zoom-ignored-buffer-name-regexps '("/Treemacs/")
+          zoom-minibuffer-preserve-layout t)
+    (spacemacs/set-leader-keys "tg" 'zoom-mode))
 
   ;; (setq lsp-modeline-diagnostics-scope :workspace)
 
