@@ -592,7 +592,7 @@ configuration.
 It is mostly for variables that should be set before packages are loaded.
 If you are unsure, try setting them in `dotspacemacs/user-config' first."
   (customize-set-variable
-   'custom-file (file-truename (concat dotspacemacs-directory "custom.el")) "Separate custom file")
+   'custom-file (file-truename (concat dotspacemacs-directory "~/workspace/dotfiles/custom.el")) "Separate custom file")
   (load custom-file))
 
 
