@@ -682,9 +682,8 @@ before packages are loaded."
     "en" 'flycheck-next-error)
 
   (spacemacs/add-all-to-hook 'clojure-mode-hook
-                             'golden-ratio-mode
+                             'zoom-mode
                              'evil-cleverparens-mode
-                             'flycheck-mode
                              'lispyville-mode)
 
   ;; Add lispyville remap for comments aware editing
