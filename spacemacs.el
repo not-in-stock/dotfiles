@@ -632,15 +632,6 @@ before packages are loaded."
   (set-face-underline 'mode-line (face-attribute 'hl-line :background))
   (set-face-underline 'mode-line-inactive (face-attribute 'hl-line :background))
 
-  (require 'zoom)
-
-  (with-eval-after-load 'zoom
-    (setq zoom-size '(0.6 . 0.6)
-          zoom-ignored-major-modes '(treemacs-mode) ;; comment
-          zoom-ignored-buffer-name-regexps '("/Treemacs/")
-          zoom-minibuffer-preserve-layout t)
-    (spacemacs/set-leader-keys "tg" 'zoom-mode))
-
   (setq peach-color "#ff5555")
   (setq mint-green-color "#50fa7b")
   (setq brick-orange-color "#ffb86c")
@@ -687,8 +678,6 @@ before packages are loaded."
   (defface super-comment
     '((t (:background "#4684f4"))) "GoogleBlueBG")
 
-   ;;;; Project specific parsing functions
-
   (defun word-after (word)
     (concat word " \\(([[:graph:]]+\\)"))
 
@@ -697,8 +686,6 @@ before packages are loaded."
 
   (defun word-after-before-slash (word)
     (concat word " \\(([[:graph:]]+\\/\\)"))
-
-  ;;;; Project specific font cusomizations
 
   (font-lock-add-keywords
    'clojurescript-mode `((,(next-word "defevent-fx") 1 're-frame-name t)
@@ -721,22 +708,6 @@ before packages are loaded."
   (spacemacs/set-leader-keys
     "ep" 'flycheck-previous-error
     "en" 'flycheck-next-error)
-
-  (spacemacs/add-all-to-hook 'emacs-lisp-mode-hook
-                             'evil-cleverparens-mode
-                             'lispyville-mode)
-
-  (spacemacs/add-all-to-hook 'clojure-mode-hook
-                             'zoom-mode
-                             'evil-cleverparens-mode
-                             'lispyville-mode)
-
-  ;; Add lispyville remap for comments aware editing
-  (add-hook 'clojure-mode-hook
-            (lambda (&rest ignore)
-              (when evil-mode
-                (define-key clojure-mode-map [remap evil-commentary]
-                  'lispyville-comment-or-uncomment))))
 
   (defun cider-default-connect ()
     (interactive)
@@ -775,6 +746,34 @@ before packages are loaded."
       "gk" 'cider-find-keyword
       "rsn" 'clojure-sort-ns))
 
+  ;; ============ Lispyville ============
+
+  (spacemacs/add-all-to-hook 'emacs-lisp-mode-hook
+                             'evil-cleverparens-mode
+                             'lispyville-mode)
+
+  (spacemacs/add-all-to-hook 'clojure-mode-hook
+                             'zoom-mode
+                             'evil-cleverparens-mode
+                             'lispyville-mode)
+
+  (add-hook 'clojure-mode-hook
+            (lambda (&rest ignore)
+              (when evil-mode
+                (define-key clojure-mode-map [remap evil-commentary]
+                  'lispyville-comment-or-uncomment))))
+
+  ;; ============ Zoom ============
+
+  (require 'zoom)
+
+  (with-eval-after-load 'zoom
+    (setq zoom-size '(0.6 . 0.6)
+          zoom-ignored-major-modes '(treemacs-mode)
+          zoom-ignored-buffer-name-regexps '("/Treemacs/")
+          zoom-minibuffer-preserve-layout t)
+    (spacemacs/set-leader-keys "tg" 'zoom-mode))
+
   ;; ============ Treemacs ============
 
   (require 'treemacs)
@@ -787,21 +786,23 @@ before packages are loaded."
       (treemacs-create-icon :icon "▸ " :extensions (dir-closed) :fallback "▸ ")
       (treemacs-create-icon :icon "▾ " :extensions (dir-open) :fallback "▾ ")))
 
-  ;; ============ Neotree ============
 
-  ;; (setq-default
-  ;;  neo-vc-integration '(face)
-  ;;  neo-confirm-create-directory 'off-p
-  ;;  neo-confirm-create-file 'off-p
-  ;;  neo-theme 'nerd)
+  ;; ============ Evil ============
 
   (setq-default evil-want-Y-yank-to-eol nil
                 evil-cross-lines t
-                helm-ag-use-agignore t
-                magit-branch-read-upstream-first t
-                magit-diff-refine-hunk 'all
-                magit-log-section-commit-count 0
                 show-paren-style 'expression)
+
+  ;; ============ Helm ============
+
+  (setq-default helm-ag-use-agignore t)
+
+  ;; ============ Magit ============
+
+  (setq-default magit-branch-read-upstream-first t
+                magit-diff-refine-hunk 'all
+                magit-log-section-commit-count 0)
+
 
   (with-eval-after-load 'clojure-mode
     (define-clojure-indent
