@@ -627,20 +627,10 @@ configuration.
 Put your configuration code here, except for variables that should be set
 before packages are loaded."
 
-  (spacemacs/toggle-mode-line-minor-modes-off)
-
-  (use-package clojure-mode
-    :ensure t
-    :config
-    (require 'flycheck-clj-kondo))
-
-  ;; (use-package lsp-mode
-  ;;   :ensure t
-  ;;   :hook ((clojure-mode-hook . lsp))
-  ;;   :commands lsp
-  ;;   :custom ((lsp-clojure-server-command '("~/.local/apps/clojure-lsp-server-clj-kondo")))
-  ;;   :config (dolist  (m '(clojure-mode clojurescript-mode))
-  ;;             (add-to-list 'lsp-language-id-configuration `(,m . "clojure"))))
+  (set-face-background 'vertical-border (face-attribute 'hl-line :background))
+  (set-face-foreground 'vertical-border (face-background 'vertical-border))
+  (set-face-underline 'mode-line (face-attribute 'hl-line :background))
+  (set-face-underline 'mode-line-inactive (face-attribute 'hl-line :background))
 
   (require 'zoom)
 
@@ -651,27 +641,51 @@ before packages are loaded."
           zoom-minibuffer-preserve-layout t)
     (spacemacs/set-leader-keys "tg" 'zoom-mode))
 
-  ;; (setq lsp-modeline-diagnostics-scope :workspace)
+  (setq peach-color "#ff5555")
+  (setq mint-green-color "#50fa7b")
+  (setq brick-orange-color "#ffb86c")
 
   (custom-set-faces
    ;;;; Customize line numbers
-   '(linum ((t (:background "#282a36" :foreground "#565761" :slant normal))))
-   '(flyspell-incorrect ((t (:underline "#ff5555"))))
+
+   `(flyspell-incorrect ((t (:underline ,peach-color))))
    ;;;; Customize flycheck error undelines
-   '(linum ((t (:background "#282a36" :foreground "#565761" :slant normal))))
-   '(flycheck-error ((t (:underline "#ff5555"))))
-   '(flycheck-info ((t (:underline "#50fa7b"))))
-   '(flycheck-warning ((t (:underline "#ffb86c"))))
-   '(flyspell-duplicate ((t (:underline "#ffb86c")))))
+   `(flycheck-error ((t (:underline ,peach-color))))
+   `(flycheck-info ((t (:underline ,mint-green-color))))
+   `(flycheck-warning ((t (:underline ,brick-orange-color))))
+   `(flyspell-duplicate ((t (:underline ,brick-orange-color))))
+   ;;; lsp headline
+   `(lsp-headerline-breadcrumb-path-error-face ((t (:underline (:style line :color ,peach-color)
+                                                    :inherit lsp-headerline-breadcrumb-path-face))))
+   `(lsp-headerline-breadcrumb-path-hint-face ((t (:underline (:style line :color ,mint-green-color)
+                                                   :inherit lsp-headerline-breadcrumb-path-face))))
+   `(lsp-headerline-breadcrumb-path-info-face ((t (:underline (:style line :color ,mint-green-color)
+                                                   :inherit lsp-headerline-breadcrumb-path-face))))
+   `(lsp-headerline-breadcrumb-path-warning-face ((t (:underline (:style line :color ,brick-orange-color)
+                                                      :inherit lsp-headerline-breadcrumb-path-face))))
+   `(lsp-headerline-breadcrumb-symbols-error-face ((t (:underline (:style line :color ,peach-color)
+                                                       :inherit lsp-headerline-breadcrumb-symbols-face))))
+   `(lsp-headerline-breadcrumb-symbols-hint-face ((t (:underline (:style line :color ,mint-green-color)
+                                                      :inherit lsp-headerline-breadcrumb-symbols-face))))
+   `(lsp-headerline-breadcrumb-symbols-info-face ((t (:underline (:style line :color ,mint-green-color)
+                                                      :inherit lsp-headerline-breadcrumb-symbols-face))))
+   `(lsp-headerline-breadcrumb-symbols-warning-face ((t (:underline (:style line :color ,brick-orange-color)
+                                                         :inherit lsp-headerline-breadcrumb-symbols-face))))
+
+   `(show-paren-match-expression ((t (:weight bold))))
+   `(treemacs-directory-face ((t (:foreground ,(face-attribute 'font-lock-constant-face :foreground))))))
 
   (defface re-frame-sub
-    '((t (:foreground "#ffb86c"))) "DrakulaOrange")
+    `((t (:foreground ,brick-orange-color))) "DrakulaOrange")
 
   (defface re-frame-evt
-    '((t (:foreground "#ff5555"))) "DrakulaRed")
+    `((t (:foreground ,peach-color))) "DrakulaRed")
 
   (defface re-frame-name
     '((t (:foreground "#4684f4"))) "GoogleBlue")
+
+  (defface super-comment
+    '((t (:background "#4684f4"))) "GoogleBlueBG")
 
    ;;;; Project specific parsing functions
 
