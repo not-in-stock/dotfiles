@@ -787,6 +787,7 @@ before packages are loaded."
       (treemacs-create-icon :icon "▸ " :extensions (dir-closed) :fallback "▸ ")
       (treemacs-create-icon :icon "▾ " :extensions (dir-open) :fallback "▾ ")))
 
+  (treemacs-hide-gitignored-files-mode t)
 
   ;; ============ Evil ============
 
