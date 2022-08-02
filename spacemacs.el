@@ -689,6 +689,26 @@ before packages are loaded."
     (concat word " \\(([[:graph:]]+\\/\\)"))
 
   (font-lock-add-keywords
+   'sql-mode `(("\".+?\"" 0 'clojure-character-face t)
+               (":[a-zA-Z0-9+-><?!]?+" 0 'clojure-keyword-face t)))
+
+  (font-lock-add-keywords
+   'clojurescript-mode `((,(next-word "defevent-fx") 1 're-frame-name t)
+                         (,(next-word "defevent-db") 1 're-frame-name t)
+                         (,(next-word "defsub") 1 're-frame-name t)
+                         (,(next-word "defsub-raw") 1 're-frame-name t)
+                         (,(word-after "<sub") 1 're-frame-name t)
+                         (,(word-after-before-slash "<sub") 1 'font-lock-type-face t)
+                         (,(word-after ">evt") 1 're-frame-name t)
+                         (,(word-after-before-slash ">evt") 1 'font-lock-type-face t)
+                         ("defsub" 0 're-frame-sub t)
+                         ("defsub-raw" 0 're-frame-sub t)
+                         ("<sub" 0 're-frame-sub t)
+                         ("defevent-fx" 0 're-frame-evt t)
+                         ("defevent-db" 0 're-frame-evt t)
+                         (">evt" 0 're-frame-evt t)))
+
+  (font-lock-add-keywords
    'clojurescript-mode `((,(next-word "defevent-fx") 1 're-frame-name t)
                          (,(next-word "defevent-db") 1 're-frame-name t)
                          (,(next-word "defsub") 1 're-frame-name t)
