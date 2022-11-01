@@ -710,6 +710,10 @@ before packages are loaded."
     "ep" 'flycheck-previous-error
     "en" 'flycheck-next-error)
 
+  (defun cider-project-reset ()
+    (interactive)
+    (cider-interactive-eval "(user/clj-reset!)"))
+
   (defun cider-default-connect ()
     (interactive)
     (let* ((host "localhost")
