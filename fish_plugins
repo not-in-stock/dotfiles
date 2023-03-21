@@ -2,5 +2,5 @@ jorgebucaran/fisher
 pure-fish/pure
 franciscolourenco/done
 edc/bass
-FabioAntunes/fish-nvm
-oh-my-fish/plugin-direnv
+danhper/fish-ssh-agent
+jorgebucaran/nvm.fish
