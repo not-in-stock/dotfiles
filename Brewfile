@@ -40,14 +40,15 @@ tap "clojure/tools"
 brew "leiningen"
 
 ## Clojure facility CLI tools
-brew "borkdude/brew/jet"
-brew "borkdude/brew/clj-kondo"
+tap "borkdude/brew"
+brew "jet"
+brew "clj-kondo"
 
 # Android Development
 cask "android-studio"
 
 # Python
-brew "python@3.10"
+brew "python"
 
 # Containers
 cask "docker"
@@ -70,3 +71,4 @@ cask "telegram"
 # Office
 mas "Keynote", id: 409183694
 mas "Numbers", id: 409203825
+cask "linear"
