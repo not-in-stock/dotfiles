@@ -1,8 +1,6 @@
 {:user {:plugins [[lein-ancient "0.7.0"]
-                  [lein-cljfmt "0.9.0"]
                   [lein-count "1.0.9"]
-                  [lein-hiera "1.1.0"]]
-        :dependencies [[nrepl "1.0.0"]]
+                  [lein-cljfmt "0.9.2"]]
         :aliases {"anc" ^{:doc "Check all dependencies for updates"}
                   ["do"
                    ["ancient" "check-profiles" ":all" ":check-clojure"]
@@ -18,6 +16,15 @@
                   "dev-clean" ^{:doc "Run fully clean development repl"}
                   ["-U" "do" "clean" ["repl" ":headless"]]
                   "deps-dev" ^{:doc "Run lein deps with repl profile"}
-                  ["-U" "with-profile" "repl" "deps"]}}
- :repl {:plugins [[cider/cider-nrepl "0.28.7"]
+                  ["-U" "with-profile" "repl" "deps"]}
+        :dependencies [[nrepl "1.0.0"]
+                       [thheller/shadow-cljs "2.22.5"]]}
+ :repl {:injections [(require '[shadow.cljs.devtools.server :as server])
+                     (server/start! {:nrepl false})]
+        :middleware [cider-nrepl.plugin/middleware
+                     refactor-nrepl.plugin/middleware]
+        :plugins [[cider/cider-nrepl "0.30.0"]
+                  [mx.cider/enrich-classpath "1.9.0"]
                   [refactor-nrepl "3.6.0"]]}}
+
+;;}
