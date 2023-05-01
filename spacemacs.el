@@ -688,9 +688,30 @@ before packages are loaded."
   (defun word-after-before-slash (word)
     (concat word " \\(([[:graph:]]+\\/\\)"))
 
-  (font-lock-add-keywords
-   'sql-mode `(("\".+?\"" 0 'clojure-character-face t)
-               (":[a-zA-Z0-9+-><?!]?+" 0 'clojure-keyword-face t)))
+  (defvar hug-slq-mode-keywords
+    `((,(rx "\"" (* nonl) "\"") 0 'clojure-character-face t)
+      (,(rx (group "/*")
+            (group "~")
+            " "
+            (group (+? nonl))
+            (? (group "~"))
+            (group "*/"))
+       3 'font-lock-function-name-face t)
+      (,(rx (group (or bol (not ":")))
+            (group ":"
+                   (+ (group (any alnum "-+_<>.*/?")))))
+       2 'clojure-keyword-face t)
+      (,(rx (group (or bol (not ":")))
+            (group ":")
+            (group (+ (any alnum "-+_<>.*?")))
+            (group "/"))
+       (3 'font-lock-type-face t)
+       (4 'default t))
+      (,(rx (group ":name ")
+            (group (+ (any alnum "-+_<>.*/?"))))
+       2 'font-lock-function-name-face t)))
+
+  (font-lock-add-keywords 'sql-mode hug-slq-mode-keywords)
 
   (font-lock-add-keywords
    'clojurescript-mode `((,(next-word "defevent-fx") 1 're-frame-name t)
