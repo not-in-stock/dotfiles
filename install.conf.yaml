@@ -12,6 +12,9 @@
       path: fish_plugins
     ~/.config/fish/completions/bb.fish: bb.fish
     ~/.spacemacs: spacemacs.el
+    ~/.doom.d:
+      create: true
+      path: doom-emacs/
     ~/.zshrc: .zshrc
 - shell:
   - [git submodule update --init --recursive, Installing/updating submodules]
