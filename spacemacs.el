@@ -142,7 +142,8 @@ This function should only modify configuration layer settings."
                                       cl-lib
                                       color
                                       svg-lib
-                                      svg-tag-mode)
+                                      svg-tag-mode
+                                      dts-mode)
 
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
@@ -791,6 +792,12 @@ before packages are loaded."
     (spacemacs/set-leader-keys-for-major-mode m
       "gk" 'cider-find-keyword
       "rsn" 'clojure-sort-ns))
+
+
+  ;; ============ DTS mode ============
+  ;; required for working with ZMK keymaps
+
+  (add-to-list 'auto-mode-alist '("\\.keymap\\'" . dts-mode))
 
   ;; ============ Lispyville ============
 
