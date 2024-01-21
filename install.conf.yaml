@@ -16,5 +16,11 @@
       create: true
       path: doom-emacs/
     ~/.zshrc: .zshrc
+    ~/Library/Keyboard Layouts/ABC+D.bundle:
+      create: true
+      path: ABC+D.bundle/
 - shell:
   - [git submodule update --init --recursive, Installing/updating submodules]
+  - 
+    command: test `uname` = "Darwin" && cp -ra ./ABC+D.bundle/  ~/Library/Keyboard\ Layouts/ABC+D.bundle
+    description: Mac OS: Copy extended QWERTY keyboard layout with German character support
