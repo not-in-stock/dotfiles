@@ -17,7 +17,9 @@
       path: doom-emacs/
     ~/.zshrc: .zshrc
 - shell:
-  - [git submodule update --init --recursive, Installing/updating submodules]
   - 
-    command: test `uname` = "Darwin" && cp -ra ./ABC+D.bundle/  ~/Library/Keyboard\ Layouts/ABC+D.bundle
-    description: Mac OS: Copy extended QWERTY keyboard layout with German character support
+   command: git submodule update --init --recursive
+   description: Installing/updating submodules
+  - 
+   command: bash -c "test `uname` = 'Darwin' & cp -a ABC+D.bundle/  ~/Library/Keyboard\ Layouts/ABC+D.bundle"
+   description: 'Mac OS Copy extended QWERTY keyboard layout with German character support'
