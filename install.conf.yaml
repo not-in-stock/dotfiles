@@ -16,9 +16,6 @@
       create: true
       path: doom-emacs/
     ~/.zshrc: .zshrc
-    ~/Library/Keyboard Layouts/ABC+D.bundle:
-      create: true
-      path: ABC+D.bundle/
 - shell:
   - [git submodule update --init --recursive, Installing/updating submodules]
   - 
