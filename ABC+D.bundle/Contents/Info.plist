@@ -11,9 +11,9 @@
 	<key>KLInfo_ABC+D</key>
 	<dict>
 		<key>TICapsLockLanguageSwitchCapable</key>
-		<false/>
+		<true/>
 		<key>TISIconIsTemplate</key>
-		<false/>
+		<true/>
 		<key>TISInputSourceID</key>
 		<string>org.sil.ukelele.keyboardlayout.abc+d.abc+d</string>
 		<key>TISIntendedLanguage</key>
