@@ -16,6 +16,9 @@
       create: true
       path: doom-emacs/
     ~/.zshrc: .zshrc
+    ~/.config/yabai/yabairc:
+      create: true
+      path: yabai.rc
 - shell:
   - 
    command: git submodule update --init --recursive
