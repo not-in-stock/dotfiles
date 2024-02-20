@@ -848,6 +848,9 @@ before packages are loaded."
                 evil-cross-lines t
                 show-paren-style 'expression)
 
+  (define-key evil-motion-state-map "gl" 'evil-end-of-line)
+  (define-key evil-motion-state-map "gh" 'evil-first-non-blank)
+
   ;; ============ Helm ============
 
   (setq-default helm-ag-use-agignore t)
