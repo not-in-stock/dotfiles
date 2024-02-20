@@ -151,7 +151,8 @@ This function should only modify configuration layer settings."
    ;; A list of packages that will not be installed and loaded.
    dotspacemacs-excluded-packages '(evil-nerd-commenter
                                     golden-ratio
-                                    treemacs-icons-dired)
+                                    treemacs-icons-dired
+                                    evil-lion)
 
    ;; Defines the behaviour of Spacemacs when installing packages.
    ;; Possible values are `used-only', `used-but-keep-unused' and `all'.
