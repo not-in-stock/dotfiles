@@ -18,8 +18,16 @@
                   "deps-dev" ^{:doc "Run lein deps with repl profile"}
                   ["-U" "with-profile" "repl" "deps"]}
         :dependencies [[nrepl "1.0.0"]
-                       [thheller/shadow-cljs "2.22.5"]]}
- :repl {:injections [(require '[shadow.cljs.devtools.server :as server])
+                       [thheller/shadow-cljs "2.26.2"]]}
+ :test {;; :injections [(require '[shadow.cljs.devtools.server :as server])
+        ;;              (server/start! {:nrepl false})]
+        :middleware [cider-nrepl.plugin/middleware
+                     refactor-nrepl.plugin/middleware]
+        :plugins [[cider/cider-nrepl "0.30.0"]
+                  [mx.cider/enrich-classpath "1.9.0"]
+                  [refactor-nrepl "3.6.0"]]}
+ :repl {:dependencies [[thheller/shadow-cljs "2.26.2"]]
+        :injections [(require '[shadow.cljs.devtools.server :as server])
                      (server/start! {:nrepl false})]
         :middleware [cider-nrepl.plugin/middleware
                      refactor-nrepl.plugin/middleware]

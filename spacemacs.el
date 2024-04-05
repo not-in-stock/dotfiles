@@ -134,6 +134,12 @@ This function should only modify configuration layer settings."
                                       lispyville
                                       magit-todos
                                       all-the-icons
+                                      (hug-sql-mode :location (recipe
+                                                               :fetcher file
+                                                               :path "~/workspace/hug-sql-mode/hug-sql-mode.el"
+                                                               ;; :fetcher github
+                                                               ;; :repo "not-in-stock/hug-sql-mode"
+                                                               ))
                                       (zoom :location (recipe
                                                        :fetcher github
                                                        :repo "not-in-stock/zoom"))
@@ -690,30 +696,7 @@ before packages are loaded."
   (defun word-after-before-slash (word)
     (concat word " \\(([[:graph:]]+\\/\\)"))
 
-  (defvar hug-slq-mode-keywords
-    `((,(rx "\"" (* nonl) "\"") 0 'clojure-character-face t)
-      (,(rx (group "/*")
-            (group "~")
-            " "
-            (group (+? nonl))
-            (? (group "~"))
-            (group "*/"))
-       3 'font-lock-function-name-face t)
-      (,(rx (group (or bol (not ":")))
-            (group ":"
-                   (+ (group (any alnum "-+_<>.*/?")))))
-       2 'clojure-keyword-face t)
-      (,(rx (group (or bol (not ":")))
-            (group ":")
-            (group (+ (any alnum "-+_<>.*?")))
-            (group "/"))
-       (3 'font-lock-type-face t)
-       (4 'default t))
-      (,(rx (group ":name ")
-            (group (+ (any alnum "-+_<>.*/?"))))
-       2 'font-lock-function-name-face t)))
-
-  (font-lock-add-keywords 'sql-mode hug-slq-mode-keywords)
+  (require 'hug-sql-mode)
 
   (font-lock-add-keywords
    'clojurescript-mode `((,(next-word "defevent-fx") 1 're-frame-name t)
