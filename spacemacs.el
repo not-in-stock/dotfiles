@@ -112,6 +112,9 @@ This function should only modify configuration layer settings."
                cursor-type nil
                evil-treemacs-state-cursor nil
                treemacs-show-cursor nil)
+     (nixos :variables
+            nix-backend 'lsp
+            nixos-format-on-save t)
      helm
      auto-completion
      syntax-checking
