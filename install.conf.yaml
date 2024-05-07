@@ -17,15 +17,18 @@
       path: doom-emacs/
     ~/.zshrc: .zshrc
     ~/.config/yabai/yabairc:
+      if: '[ `uname` = Darwin ]' 
       create: true
       path: yabai.rc
+    ~/.config/skhd/skhdrc:
+      if: '[ `uname` = Darwin ]' 
+      create: true
+      path: skhd.rc
     ~/.config/karabiner.edn:
+      if: '[ `uname` = Darwin ]' 
       create: true
       path: karabiner.edn
 - shell:
   - 
    command: git submodule update --init --recursive
    description: Installing/updating submodules
-  - 
-   command: bash -c "test `uname` = 'Darwin' & cp -a ABC+D.bundle/  ~/Library/Keyboard\ Layouts/ABC+D.bundle"
-   description: 'Mac OS Copy extended QWERTY keyboard layout with German character support'
