@@ -1,0 +1,11 @@
+{:input-sources {:abc {:input_source_id "com.apple.keylayout.ABC"
+                       :language "en"}}
+ :main [{:des "German Ä. Option + a = ä; Shift + Option + a = Ä"
+         :rules [[:!OS##a [:!Ou :!Sa] [:abc]]
+                 [:!O##a  [:!Ou :a] [:abc]]]}
+        {:des "German Ö. Option + o = ö; Shift + Option + o = Ö"
+         :rules [[:!OS##o [:!Ou :!So] [:abc]]
+                 [:!O##o [:!Ou :o] [:abc]]]}
+        {:des "German Ü. Option + u = ü; Shift + Option + u = Ü"
+         :rules [[:!OS##u [:!Ou :!Su] [:abc]]
+                 [:!O##u [:!Ou :u] [:abc]]]}]}

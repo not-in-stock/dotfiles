@@ -19,6 +19,9 @@
     ~/.config/yabai/yabairc:
       create: true
       path: yabai.rc
+    ~/.config/karabiner.edn:
+      create: true
+      path: karabiner.edn
 - shell:
   - 
    command: git submodule update --init --recursive
