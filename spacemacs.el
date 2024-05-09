@@ -138,11 +138,8 @@ This function should only modify configuration layer settings."
                                       magit-todos
                                       all-the-icons
                                       (hug-sql-mode :location (recipe
-                                                               :fetcher file
-                                                               :path "~/workspace/hug-sql-mode/hug-sql-mode.el"
-                                                               ;; :fetcher github
-                                                               ;; :repo "not-in-stock/hug-sql-mode"
-                                                               ))
+                                                               :fetcher github
+                                                               :repo "not-in-stock/hug-sql-mode"))
                                       (zoom :location (recipe
                                                        :fetcher github
                                                        :repo "not-in-stock/zoom"))
@@ -699,7 +696,7 @@ before packages are loaded."
   (defun word-after-before-slash (word)
     (concat word " \\(([[:graph:]]+\\/\\)"))
 
-  (require 'hug-sql-mode)
+   (require 'hug-sql-mode)
 
   (font-lock-add-keywords
    'clojurescript-mode `((,(next-word "defevent-fx") 1 're-frame-name t)
