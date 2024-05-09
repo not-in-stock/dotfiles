@@ -2,3 +2,5 @@ custom.el
 *.rej
 *.~undo-tree~
 /.DS_store
+/.lsp
+/.clj-kondo
