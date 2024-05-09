@@ -17,18 +17,22 @@
       path: doom-emacs/
     ~/.zshrc: .zshrc
     ~/.config/yabai/yabairc:
-      if: '[ `uname` = Darwin ]' 
+      if: '[ `uname` = Darwin ]'
       create: true
       path: yabai.rc
     ~/.config/skhd/skhdrc:
-      if: '[ `uname` = Darwin ]' 
+      if: '[ `uname` = Darwin ]'
       create: true
       path: skhd.rc
+    ~/.config/borders/bordersrc:
+      if: '[ `uname` = Darwin ]'
+      create: true
+      path: borders.rc
     ~/.config/karabiner.edn:
-      if: '[ `uname` = Darwin ]' 
+      if: '[ `uname` = Darwin ]'
       create: true
       path: karabiner.edn
 - shell:
-  - 
+  -
    command: git submodule update --init --recursive
    description: Installing/updating submodules
