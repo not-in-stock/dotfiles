@@ -1,7 +1,8 @@
+#!/bin/bash
+
 yabai -m config layout bsp
 
 yabai -m config window_placement second_child
-
 # padding
 yabai -m config top_padding 6
 yabai -m config bottom_padding 6
@@ -17,3 +18,4 @@ yabai -m config mouse_action2 resize
 yabai -m config mouse_drop_action swap
 yabai -m rule --add app="^System Settings$" manage=off
 yabai -m rule --add app="^Calculator$" manage=off
+yabai -m rule --add app="^Emacs$" manage=on
