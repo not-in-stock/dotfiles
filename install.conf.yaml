@@ -17,19 +17,19 @@
       path: doom-emacs/
     ~/.zshrc: .zshrc
     ~/.config/yabai/yabairc:
-      if: '[ `uname` = Darwin ]'
+      if: '[ $(uname) = Darwin ]'
       create: true
       path: darwin/yabai.rc
     ~/.config/skhd/skhdrc:
-      if: '[ `uname` = Darwin ]'
+      if: '[ $(uname) = Darwin ]'
       create: true
       path: darwin/skhd.rc
     ~/.config/borders/bordersrc:
-      if: '[ `uname` = Darwin ]'
+      if: '[ $(uname) = Darwin ]'
       create: true
       path: darwin/borders.rc
     ~/.config/karabiner.edn:
-      if: '[ `uname` = Darwin ]'
+      if: '[ $(uname) = Darwin ]'
       create: true
       path: darwin/goku.edn
 - shell:
