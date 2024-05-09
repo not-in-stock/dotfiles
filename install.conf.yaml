@@ -31,7 +31,7 @@
     ~/.config/karabiner.edn:
       if: '[ `uname` = Darwin ]'
       create: true
-      path: darwin/karabiner.edn
+      path: darwin/goku.edn
 - shell:
   -
    command: git submodule update --init --recursive
