@@ -19,19 +19,19 @@
     ~/.config/yabai/yabairc:
       if: '[ `uname` = Darwin ]'
       create: true
-      path: yabai.rc
+      path: darwin/yabai.rc
     ~/.config/skhd/skhdrc:
       if: '[ `uname` = Darwin ]'
       create: true
-      path: skhd.rc
+      path: darwin/skhd.rc
     ~/.config/borders/bordersrc:
       if: '[ `uname` = Darwin ]'
       create: true
-      path: borders.rc
+      path: darwin/borders.rc
     ~/.config/karabiner.edn:
       if: '[ `uname` = Darwin ]'
       create: true
-      path: karabiner.edn
+      path: darwin/karabiner.edn
 - shell:
   -
    command: git submodule update --init --recursive
