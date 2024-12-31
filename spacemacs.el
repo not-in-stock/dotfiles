@@ -698,7 +698,7 @@ before packages are loaded."
   (defun word-after-before-slash (word)
     (concat word " \\(([[:graph:]]+\\/\\)"))
 
-   (require 'hug-sql-mode)
+  (require 'hug-sql-mode)
 
   (font-lock-add-keywords
    'clojurescript-mode `((,(next-word "defevent-fx") 1 're-frame-name t)
@@ -747,18 +747,18 @@ before packages are loaded."
     (let* ((host "localhost")
            (port (string-to-number (car (cdr (car (cider--infer-ports host nil)))))))
       (thread-first ()
-        (plist-put :host host)
-        (plist-put :port port)
-        (cider-connect))))
+                    (plist-put :host host)
+                    (plist-put :port port)
+                    (cider-connect))))
 
   (defun cider-connect-remote ()
     (interactive)
     (let* ((host "localhost")
            (port "5555"))
       (thread-first ()
-        (plist-put :host host)
-        (plist-put :port port)
-        (cider-connect))))
+                    (plist-put :host host)
+                    (plist-put :port port)
+                    (cider-connect))))
 
   (dolist (m '(clojure-mode))
     (spacemacs/set-leader-keys-for-major-mode m
@@ -800,7 +800,7 @@ before packages are loaded."
             (lambda (&rest ignore)
               (when evil-mode
                 (define-key clojure-mode-map [remap evil-commentary]
-                  'lispyville-comment-or-uncomment))))
+                            'lispyville-comment-or-uncomment))))
 
   ;; ============ Zoom ============
 
@@ -849,7 +849,7 @@ before packages are loaded."
 
   (with-eval-after-load 'clojure-mode
     (define-clojure-indent
-      (facts 1))))
+     (facts 1))))
 
 ;; Do not write anything past this comment. This is where Emacs will
 ;; auto-generate custom variable definitions.
