@@ -695,6 +695,15 @@ before packages are loaded."
     "en" 'flycheck-next-error)
 
 
+  ;; ============ Set Mac Modifiers ============
+
+  (setq mac-command-modifier 'super
+        ns-command-modifier 'super
+        mac-option-modifier 'meta
+        ns-option-modifier 'meta
+        mac-right-option-modifier 'none
+        ns-right-option-modifier 'none)
+
   ;; ============ Clojure ============
 
   ;; ------------ Clojure Specific faces ------------
