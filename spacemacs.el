@@ -676,17 +676,6 @@ before packages are loaded."
    `(treemacs-directory-face ((t (:foreground ,(face-attribute 'font-lock-constant-face :foreground)))))
    `(treemacs-root-face ((t (:foreground "white" :height 1.15 :weight medium)))))
 
-  (defface re-frame-sub
-    `((t (:foreground ,brick-orange-color))) "DrakulaOrange")
-
-  (defface re-frame-evt
-    `((t (:foreground ,peach-color))) "DrakulaRed")
-
-  (defface re-frame-name
-    '((t (:foreground "#4684f4"))) "GoogleBlue")
-
-  (defface super-comment
-    '((t (:background "#4684f4"))) "GoogleBlueBG")
 
   (defun word-after (word)
     (concat word " \\(([[:graph:]]+\\)"))
@@ -699,43 +688,64 @@ before packages are loaded."
 
   (require 'hug-sql-mode)
 
-  (font-lock-add-keywords
-   'clojurescript-mode `((,(next-word "defevent-fx") 1 're-frame-name t)
-                         (,(next-word "defevent-db") 1 're-frame-name t)
-                         (,(next-word "defsub") 1 're-frame-name t)
-                         (,(next-word "defsub-raw") 1 're-frame-name t)
-                         (,(word-after "<sub") 1 're-frame-name t)
-                         (,(word-after-before-slash "<sub") 1 'font-lock-type-face t)
-                         (,(word-after ">evt") 1 're-frame-name t)
-                         (,(word-after-before-slash ">evt") 1 'font-lock-type-face t)
-                         ("defsub" 0 're-frame-sub t)
-                         ("defsub-raw" 0 're-frame-sub t)
-                         ("<sub" 0 're-frame-sub t)
-                         ("defevent-fx" 0 're-frame-evt t)
-                         ("defevent-db" 0 're-frame-evt t)
-                         (">evt" 0 're-frame-evt t)))
-
-  (font-lock-add-keywords
-   'clojurescript-mode `((,(next-word "defevent-fx") 1 're-frame-name t)
-                         (,(next-word "defevent-db") 1 're-frame-name t)
-                         (,(next-word "defsub") 1 're-frame-name t)
-                         (,(next-word "defsub-raw") 1 're-frame-name t)
-                         (,(word-after "<sub") 1 're-frame-name t)
-                         (,(word-after-before-slash "<sub") 1 'font-lock-type-face t)
-                         (,(word-after ">evt") 1 're-frame-name t)
-                         (,(word-after-before-slash ">evt") 1 'font-lock-type-face t)
-                         ("defsub" 0 're-frame-sub t)
-                         ("defsub-raw" 0 're-frame-sub t)
-                         ("<sub" 0 're-frame-sub t)
-                         ("defevent-fx" 0 're-frame-evt t)
-                         ("defevent-db" 0 're-frame-evt t)
-                         (">evt" 0 're-frame-evt t)))
-
   (spacemacs/toggle-evil-safe-lisp-structural-editing-on-register-hooks)
 
   (spacemacs/set-leader-keys
     "ep" 'flycheck-previous-error
     "en" 'flycheck-next-error)
+
+
+  ;; ============ Clojure ============
+
+  ;; ------------ Clojure Specific faces ------------
+
+  (defface re-frame-sub
+    `((t (:foreground ,brick-orange-color))) "DrakulaOrange")
+
+  (defface re-frame-evt
+    `((t (:foreground ,peach-color))) "DrakulaRed")
+
+  (defface re-frame-name
+    '((t (:foreground "#4684f4"))) "GoogleBlue")
+
+  (defface super-comment
+    '((t (:background "#4684f4"))) "GoogleBlueBG")
+
+  ;; ------------ Clojure Specific Fontlocks ------------
+
+  (font-lock-add-keywords
+   'clojurescript-mode `((,(next-word "defevent-fx") 1 're-frame-name t)
+                         (,(next-word "defevent-db") 1 're-frame-name t)
+                         (,(next-word "defsub") 1 're-frame-name t)
+                         (,(next-word "defsub-raw") 1 're-frame-name t)
+                         (,(word-after "<sub") 1 're-frame-name t)
+                         (,(word-after-before-slash "<sub") 1 'font-lock-type-face t)
+                         (,(word-after ">evt") 1 're-frame-name t)
+                         (,(word-after-before-slash ">evt") 1 'font-lock-type-face t)
+                         ("defsub" 0 're-frame-sub t)
+                         ("defsub-raw" 0 're-frame-sub t)
+                         ("<sub" 0 're-frame-sub t)
+                         ("defevent-fx" 0 're-frame-evt t)
+                         ("defevent-db" 0 're-frame-evt t)
+                         (">evt" 0 're-frame-evt t)))
+
+  (font-lock-add-keywords
+   'clojurescript-mode `((,(next-word "defevent-fx") 1 're-frame-name t)
+                         (,(next-word "defevent-db") 1 're-frame-name t)
+                         (,(next-word "defsub") 1 're-frame-name t)
+                         (,(next-word "defsub-raw") 1 're-frame-name t)
+                         (,(word-after "<sub") 1 're-frame-name t)
+                         (,(word-after-before-slash "<sub") 1 'font-lock-type-face t)
+                         (,(word-after ">evt") 1 're-frame-name t)
+                         (,(word-after-before-slash ">evt") 1 'font-lock-type-face t)
+                         ("defsub" 0 're-frame-sub t)
+                         ("defsub-raw" 0 're-frame-sub t)
+                         ("<sub" 0 're-frame-sub t)
+                         ("defevent-fx" 0 're-frame-evt t)
+                         ("defevent-db" 0 're-frame-evt t)
+                         (">evt" 0 're-frame-evt t)))
+
+  ;; ------------ Cider additions ------------
 
   (defun cider-project-reset ()
     (interactive)
