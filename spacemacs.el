@@ -132,7 +132,6 @@ This function should only modify configuration layer settings."
    dotspacemacs-additional-packages '(dracula-theme
                                       rainbow-mode
                                       solaire-mode
-                                      rebecca-theme
                                       doom-themes
                                       lispyville
                                       magit-todos
