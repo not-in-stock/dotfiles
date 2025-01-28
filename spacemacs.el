@@ -636,6 +636,14 @@ configuration.
 Put your configuration code here, except for variables that should be set
 before packages are loaded."
 
+  ;; ============ Emacs Macport trnaslucent background  ============
+  ;; (set-face-background 'default "mac:windowBackgroundColor")
+  ;; (set-face-stipple 'default "alpha:25%")
+
+  ;; (set-frame-parameter nil 'alpha-background 80) ; For current frame
+  ;; (add-to-list 'default-frame-alist '(alpha-background . 80)) ; For all new frames henceforth
+
+
   (set-face-background 'vertical-border (face-attribute 'hl-line :background))
   (set-face-foreground 'vertical-border (face-background 'vertical-border))
   (set-face-underline 'mode-line (face-attribute 'hl-line :background))
