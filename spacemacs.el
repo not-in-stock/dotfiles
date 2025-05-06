@@ -847,12 +847,13 @@ before packages are loaded."
   (require 'treemacs)
   (require 'treemacs-themes)
 
-  (treemacs-modify-theme "Default"
-    :icon-directory "/other/icons/dir"
-    :config
-    (progn
-      (treemacs-create-icon :icon "▸ " :extensions (dir-closed) :fallback "▸ ")
-      (treemacs-create-icon :icon "▾ " :extensions (dir-open) :fallback "▾ ")))
+  (treemacs-modify-theme
+   "Default"
+   :icon-directory "/other/icons/dir"
+   :config
+   (progn
+     (treemacs-create-icon :icon "▸ " :extensions (dir-closed) :fallback "▸ ")
+     (treemacs-create-icon :icon "▾ " :extensions (dir-open) :fallback "▾ ")))
 
   (treemacs-hide-gitignored-files-mode t)
 
