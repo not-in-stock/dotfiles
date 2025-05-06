@@ -712,6 +712,9 @@ before packages are loaded."
         mac-right-option-modifier 'none
         ns-right-option-modifier 'none)
 
+  ;; ============ Scrolling ============
+  (pixel-scroll-precision-mode)
+
   ;; ============ Clojure ============
 
   ;; ------------ Clojure Specific faces ------------
